@@ -1,0 +1,43 @@
+.demo-banner {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.75rem;
+	flex-wrap: wrap;
+	background: #422006;
+	color: #fef3c7;
+	padding: 0.75rem 1rem;
+	text-align: center;
+	font-size: 0.875rem;
+}
+
+.demo-banner strong {
+	color: #fde68a;
+}
+
+.demo-banner button {
+	min-height: 2rem;
+	border: 1px solid #fcd34d;
+	border-radius: 0.375rem;
+	padding: 0.25rem 0.625rem;
+	color: #422006;
+	background: #fef3c7;
+	font-weight: 600;
+}
+
+.demo-banner button:hover {
+	background: #fde68a;
+}
+
+body > div:not(.demo-banner) a[href="registro.html"],
+body > div:not(.demo-banner) a[href="banquero.html"] {
+	display: none !important;
+}
+
+@media (max-width: 640px) {
+	.demo-banner {
+		align-items: stretch;
+		flex-direction: column;
+		gap: 0.35rem;
+	}
+}

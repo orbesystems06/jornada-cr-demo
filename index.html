@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="theme-color" content="#0f172a">
+	<meta name="robots" content="noindex, nofollow">
+	<title>Ventas de tiempos | Jornada CR</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="stylesheet" href="theme.css">
+	<link rel="stylesheet" href="demo.css">
+	<script src="theme.js" defer></script>
+	
+	<style>
+		body { font-family: "Segoe UI", sans-serif; }
+		.nav-link { transition: background-color .18s ease, color .18s ease; }
+		.row-enter { animation: appear .35s ease both; }
+		@keyframes appear { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+		@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+	</style>
+</head>
+<body class="min-h-screen bg-gray-100 text-slate-800 antialiased">
+		<div class="demo-banner" role="status"><strong>DEMO INTERACTIVO - NO ES PARA VENTAS REALES</strong><span>Las compras y saldos se guardan solo en este navegador; no se comparten ni son datos oficiales.</span><button id="demo-reset" type="button">Borrar datos del demo</button></div>
+	<a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+	<div class="min-h-screen lg:flex">
+		<aside class="flex shrink-0 flex-col bg-slate-900 text-slate-100 lg:min-h-screen lg:w-64">
+			<div class="flex items-center gap-3 border-b border-slate-800 px-5 py-5">
+				<div class="grid h-10 w-10 place-items-center rounded-lg bg-teal-500 text-slate-950" aria-hidden="true">
+					<svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5m0 14h17M8 15l3-4 3 2 5-7" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 6h2v2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+				</div>
+				<div><p class="text-sm font-semibold tracking-wide">Jornada CR</p><p class="text-xs text-slate-400">Control de ventas</p></div>
+			</div>
+			<div class="px-5 pb-3 pt-5 text-[11px] font-semibold uppercase tracking-wider text-slate-500">Espacio de trabajo</div>
+			<nav aria-label="Navegación principal" class="flex gap-1 px-3 pb-4 lg:flex-col">
+				<a href="index.html" class="nav-link flex items-center gap-3 rounded-md bg-slate-800 px-3 py-2.5 text-sm font-medium text-white" aria-current="page">
+					<svg viewBox="0 0 24 24" class="h-5 w-5 text-teal-400" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg>
+					Ventas
+				</a>
+				<a href="registro.html" class="nav-link flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white">
+					<svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M7.5 3v4M16.5 3v4M3.5 10h17m-12 4 2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+					Registro diario
+				</a>
+				<a href="banquero.html" class="nav-link flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white">
+					<svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9h18L12 4 3 9Zm2 2v7m5-7v7m4-7v7m5-7v7M3 21h18M2 18h20" stroke-linecap="round" stroke-linejoin="round"/></svg>
+					Cuenta del banquero
+				</a>
+			</nav>
+			<div class="mt-auto hidden border-t border-slate-800 px-5 py-4 lg:block">
+				<div class="flex items-center gap-2 text-xs text-slate-400"><span class="h-2 w-2 rounded-full bg-emerald-400"></span>Zona horaria: Costa Rica</div>
+			</div>
+		</aside>
+
+		<main id="main-content" tabindex="-1" class="min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+			<header class="mb-7 flex flex-col justify-between gap-5 border-b border-gray-200 pb-6 sm:flex-row sm:items-center">
+				<div>
+					<p class="mb-1 text-sm font-medium text-teal-700">Operaciones / Ventas</p>
+					<h1 class="text-2xl font-semibold tracking-tight text-slate-900">Ventas de tiempos</h1>
+					<p id="today-date" class="mt-1 text-sm text-slate-500"></p>
+				</div>
+				<div class="flex flex-col gap-2 self-start sm:flex-row sm:items-center sm:self-auto">
+					<button type="button" role="switch" aria-checked="false" data-theme-toggle class="theme-toggle grid h-10 w-10 place-items-center rounded-md border border-gray-300 bg-white text-slate-700 hover:bg-gray-50" title="Cambiar a modo oscuro"><svg viewBox="0 0 24 24" class="theme-icon-sun h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" stroke-linecap="round"/></svg><svg viewBox="0 0 24 24" class="theme-icon-moon h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5a8.7 8.7 0 1 0 12 12Z" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr-only">Cambiar tema</span></button>
+					<a href="registro.html" class="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-teal-700 bg-white px-3 text-sm font-semibold text-teal-800 hover:bg-teal-50"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 4h11v16H5V7l3-3Zm0 0v4H5m3 4h8m-8 4h8" stroke-linecap="round" stroke-linejoin="round"/></svg>Registro y ganadores</a>
+					<div class="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-2.5 shadow-sm">
+						<span class="relative flex h-2.5 w-2.5"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-50"></span><span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span></span>
+						<div><p id="clock" class="font-mono text-lg font-semibold tabular-nums text-slate-900" aria-live="off">--:--:--</p><p class="text-[11px] font-medium uppercase tracking-wide text-slate-500">Hora de Costa Rica</p></div>
+					</div>
+				</div>
+			</header>
+
+			<section id="ventas" aria-label="Registrar venta" class="mb-7 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+				<div class="flex flex-col gap-4 border-b border-gray-200 px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
+					<div><p class="text-xs font-semibold uppercase tracking-wide text-teal-700">Nueva transacción</p><h2 class="mt-1 text-lg font-semibold text-slate-900">Registrar venta</h2></div>
+					<div class="flex items-center justify-between gap-5 rounded-md bg-gray-50 px-3 py-2 sm:justify-start"><div><p class="text-xs font-medium text-slate-500">Deuda con el banquero</p><p id="sales-banker-balance" class="text-lg font-semibold tabular-nums text-slate-900">₡0</p></div><a href="banquero.html" class="text-sm font-medium text-teal-700 hover:text-teal-900">Ver cuenta</a></div>
+				</div>
+				<div class="p-5 sm:p-6">
+					<ol aria-label="Pasos para registrar una venta" class="mb-6 grid gap-3 rounded-lg border border-teal-200 bg-teal-50 p-4 text-sm text-slate-700 sm:grid-cols-3">
+						<li class="flex items-start gap-3"><span class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-teal-700 font-semibold text-white">1</span><span><strong class="block text-slate-900">Elige el sorteo</strong>Selecciona el juego, país y horario.</span></li>
+						<li class="flex items-start gap-3"><span class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-teal-700 font-semibold text-white">2</span><span><strong class="block text-slate-900">Ingresa la jugada</strong>Escribe los números y cuánto va a cada uno.</span></li>
+						<li class="flex items-start gap-3"><span class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-teal-700 font-semibold text-white">3</span><span><strong class="block text-slate-900">Revisa y registra</strong>Confirma el total y registra el ticket.</span></li>
+					</ol>
+					<div class="mb-5 grid gap-3 sm:grid-cols-[minmax(12rem,0.7fr)_minmax(0,1.3fr)] sm:items-end">
+						<label class="block">
+							<span class="mb-1.5 block text-sm font-semibold text-slate-700">Tipo de juego</span>
+							<select id="game-category" class="h-11 w-full rounded-md border border-gray-300 bg-white px-3 text-sm outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100">
+								<option value="normal">Sorteos normales</option>
+								<option value="parley">Parley</option>
+								<option value="special">Monazo o Tripleta</option>
+							</select>
+						</label>
+						<div>
+							<p id="game-choice-label" class="mb-1.5 block text-sm font-semibold text-slate-700">País</p>
+							<div id="game-choice-buttons" role="group" aria-labelledby="game-choice-label" class="grid grid-cols-2 gap-2 sm:grid-cols-3"></div>
+						</div>
+					</div>
+					<div class="mb-6 rounded-md border border-gray-200 bg-gray-50 p-4">
+						<div class="mb-3 flex flex-col justify-between gap-1 sm:flex-row sm:items-center"><div><h3 id="draw-heading" class="text-base font-semibold text-slate-900">Sorteos disponibles</h3><p id="draw-family" class="mt-0.5 text-sm text-slate-600">Ticas</p></div><span class="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600"><span class="h-2 w-2 rounded-full bg-teal-500"></span>Cierre 5 min antes · Costa Rica</span></div>
+						<div id="draw-buttons" role="group" aria-label="Seleccione un sorteo" class="flex flex-wrap gap-2"></div>
+						<p id="draw-selection-status" role="status" aria-live="polite" class="mt-2 text-sm font-medium text-teal-800">Selecciona un sorteo abierto para continuar.</p>
+						<p id="draw-empty" class="hidden py-2 text-sm text-slate-500">No hay sorteos abiertos para este juego hoy.</p>
+						<p id="draw-error" role="alert" class="hidden py-2 text-sm text-rose-700"></p>
+					</div>
+					<form id="bet-entry-form" aria-label="Ingresar números y montos" class="mb-6 grid gap-4 rounded-lg border border-gray-200 p-4 sm:grid-cols-2 sm:p-5">
+						<div id="number-fields" class="grid gap-4 sm:col-span-2 sm:grid-cols-2"></div>
+						<button id="add-ticket-item" type="submit" class="inline-flex min-h-11 items-center justify-center gap-2 self-end rounded-md border border-teal-700 bg-white px-4 text-sm font-semibold text-teal-800 hover:bg-teal-50"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14m-7-7h14" stroke-linecap="round"/></svg>Añadir números al ticket</button>
+						<p id="bet-entry-state" role="status" aria-live="polite" class="self-center text-sm text-slate-600">Se asignará este monto a cada número ingresado.</p>
+					</form>
+					<form id="game-sale-form" class="grid gap-4 sm:grid-cols-2">
+						<div class="sm:col-span-2">
+							<label class="block">
+								<span class="mb-1.5 block text-sm font-medium text-slate-700">Código de Tax</span>
+								<div class="flex gap-2">
+									<input id="tax-code-input" type="text" maxlength="80" autocomplete="off" placeholder="Código" class="h-10 w-full rounded-md border border-gray-300 px-3 text-sm outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100">
+									<button id="tax-code-lookup-btn" type="button" class="inline-flex h-10 shrink-0 items-center justify-center gap-1.5 rounded-md border border-gray-300 bg-white px-3 text-sm font-medium text-slate-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500">
+										<svg viewBox="0 0 24 24" class="h-4 w-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3" stroke-linecap="round"/></svg>
+										Buscar ticket
+									</button>
+								</div>
+							</label>
+							<div id="tax-code-menu" class="mt-2.5 hidden rounded-md border border-teal-200 bg-teal-50/90 p-3.5 text-sm shadow-sm transition-all">
+								<div class="flex items-start justify-between gap-3">
+									<div>
+										<p class="font-semibold text-slate-900" id="tax-menu-title">Ticket encontrado</p>
+										<p class="mt-0.5 text-xs text-slate-600" id="tax-menu-detail"></p>
+									</div>
+									<button id="tax-menu-close" type="button" aria-label="Cerrar" class="grid h-6 w-6 place-items-center rounded text-slate-400 hover:bg-teal-100 hover:text-slate-700">
+										<svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12" stroke-linecap="round"/></svg>
+									</button>
+								</div>
+								<div id="tax-menu-items" class="mt-2 rounded border border-teal-100 bg-white p-2 font-mono text-xs text-slate-800"></div>
+								<div class="mt-3 flex flex-wrap gap-2">
+									<button id="tax-menu-copy" type="button" class="inline-flex h-8 items-center gap-1.5 rounded-md bg-teal-700 px-3 text-xs font-medium text-white hover:bg-teal-800">
+										<svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke-linecap="round"/></svg>
+										Copiar números y valores
+									</button>
+									<button id="tax-menu-revert" type="button" class="inline-flex h-8 items-center gap-1.5 rounded-md border border-rose-300 bg-white px-3 text-xs font-medium text-rose-700 hover:bg-rose-50">
+										<svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6" stroke-linecap="round"/></svg>
+										Revertir / Anular esta venta
+									</button>
+								</div>
+							</div>
+						</div>
+						<section id="ticket-preview" aria-label="Resumen del ticket" class="rounded-md border border-gray-200 bg-gray-50 p-4 sm:col-span-2">
+							<div class="mb-3 flex items-center justify-between"><div><h3 class="text-sm font-semibold text-slate-900">Resumen antes de registrar</h3><p id="ticket-line-count" class="mt-0.5 text-xs text-slate-500">0 números</p></div><p id="ticket-total" class="text-lg font-semibold tabular-nums text-slate-900">₡0</p></div>
+							<div id="ticket-preview-lines" class="space-y-1.5 text-sm text-slate-600"><p>Agrega números y montos para revisar el ticket.</p></div>
+						</section>
+						<div class="flex flex-col gap-3 border-t border-gray-100 pt-4 sm:col-span-2 sm:flex-row sm:items-center">
+							<button id="game-sale-submit" type="submit" name="printMode" value="print" disabled class="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-teal-700 px-5 text-sm font-semibold text-white hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-300"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h13l3 3v13H4zM8 4v6h8V4M8 20v-6h8v6" stroke-linejoin="round"/></svg>Registrar e imprimir ticket</button>
+							<button id="game-sale-no-print" data-owner-only type="submit" name="printMode" value="skip" disabled class="hidden inline-flex h-11 items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:bg-gray-300"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h13l3 3v13H4zM8 4v6h8V4M8 20v-6h8v6M3 3l18 18" stroke-linecap="round" stroke-linejoin="round"/></svg>Prueba: guardar sin imprimir</button>
+							<div class="sm:ml-auto"><p id="sale-state" role="status" aria-live="polite" class="text-sm text-slate-500">Seleccione un sorteo abierto.</p><p data-owner-only class="hidden mt-1 text-xs text-slate-500">La prueba también se registra y suma al saldo del banquero.</p></div>
+						</div>
+					</form>
+					<div id="sale-ticket-retry" class="mt-4 hidden rounded-md border border-amber-200 bg-amber-50 p-3"><div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><p id="sale-ticket-message" class="text-sm text-amber-900"></p><button id="sale-ticket-print" type="button" class="h-9 rounded-md border border-amber-300 bg-white px-3 text-sm font-medium text-amber-900 hover:bg-amber-100">Imprimir ticket</button></div></div>
+				</div>
+			</section>
+
+			<section id="daily-sales" aria-label="Registro diario de ventas" class="hidden mb-6 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+				<div class="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
+					<div><p class="text-xs font-semibold uppercase tracking-wide text-teal-700">Historial permanente</p><h2 class="mt-1 text-base font-semibold text-slate-900">Registro de compras</h2></div>
+					<div class="flex flex-wrap items-center gap-2">
+						<button id="day-previous" type="button" aria-label="Día anterior" title="Día anterior" class="grid h-10 w-10 place-items-center rounded-md border border-gray-300 bg-white text-slate-700 hover:bg-gray-50"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+						<label><span class="sr-only">Seleccionar día</span><input id="sales-date" type="date" class="h-10 rounded-md border border-gray-300 bg-white px-3 text-sm text-slate-700 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"></label>
+						<button id="day-next" type="button" aria-label="Día siguiente" title="Día siguiente" class="grid h-10 w-10 place-items-center rounded-md border border-gray-300 bg-white text-slate-700 hover:bg-gray-50"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+						<button id="day-today" type="button" class="h-10 rounded-md border border-gray-300 bg-white px-3 text-sm font-medium text-slate-700 hover:bg-gray-50">Hoy</button>
+					</div>
+				</div>
+				<div class="border-t border-gray-100 bg-gray-50 px-5 py-3"><p id="selected-day-label" class="text-sm font-medium text-slate-600"></p></div>
+			</section>
+
+			<section class="hidden mb-6 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+				<div class="flex flex-col gap-3 border-b border-gray-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between"><div><h2 class="text-base font-semibold text-slate-900">Compras del día</h2><p id="daily-count" class="mt-1 text-sm text-slate-500">0 compras</p></div><label class="relative block"><span class="sr-only">Buscar persona</span><svg viewBox="0 0 24 24" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5" stroke-linecap="round"/></svg><input id="customer-search" type="search" placeholder="Buscar cliente" class="h-10 w-full rounded-md border border-gray-300 bg-white pl-9 pr-3 text-sm outline-none placeholder:text-slate-400 focus:border-teal-600 focus:ring-2 focus:ring-teal-100 sm:w-56"></label></div>
+				<div class="overflow-x-auto"><table class="w-full min-w-[820px] border-collapse text-left text-sm"><thead class="bg-gray-50 text-xs font-semibold uppercase tracking-wide text-slate-500"><tr><th class="px-5 py-3.5">Hora</th><th class="px-4 py-3.5">Cliente</th><th class="px-4 py-3.5">Sorteo</th><th class="px-4 py-3.5">Número / modalidad</th><th class="px-4 py-3.5 text-right">Compra</th><th class="px-5 py-3.5">Resultado</th></tr></thead><tbody id="daily-sales-rows" class="divide-y divide-gray-100"></tbody></table></div>
+				<div id="daily-empty" class="hidden px-5 py-12 text-center text-sm text-slate-500">No hay compras registradas para este día.</div>
+				<div id="daily-error" role="alert" class="hidden px-5 py-4 text-sm text-rose-700"></div>
+			</section>
+
+			<section class="hidden mb-6 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+				<div class="border-b border-gray-200 px-5 py-4"><h2 class="text-base font-semibold text-slate-900">Resultados y ganadores</h2><p class="mt-1 text-sm text-slate-500">Ingrese el resultado oficial cuando finalice cada sorteo.</p></div>
+				<div id="draw-results-list" class="divide-y divide-gray-100"></div>
+				<div id="draw-results-empty" class="px-5 py-7 text-sm text-slate-500">No hay sorteos con ventas en este día.</div>
+			</section>
+
+			<section aria-label="Total diario de ventas" class="hidden mb-7 rounded-lg bg-slate-900 px-5 py-5 text-white shadow-sm">
+				<div><p class="text-sm font-medium text-slate-300">Total vendido en el día</p><p id="daily-total" class="mt-1 text-3xl font-semibold tabular-nums">₡0</p></div>
+				<div class="mt-3 text-sm text-slate-300 sm:mt-0"><span id="daily-total-count">0</span> compras registradas · <span id="daily-winner-count">0</span> ganadoras</div>
+			</section>
+
+			<section aria-label="Indicadores de asistencia" class="hidden mb-7 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+				<article class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+					<div class="flex items-start justify-between"><p class="text-sm font-medium text-slate-500">Empleados activos hoy</p><span class="grid h-9 w-9 place-items-center rounded-md bg-sky-50 text-sky-700" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20m6-9a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm7-6.5a3.5 3.5 0 0 1 0 6.8M20 20v-1.5a3.5 3.5 0 0 0-2.5-3.35" stroke-linecap="round"/></svg></span></div>
+					<p id="kpi-active" class="mt-4 text-3xl font-semibold tabular-nums text-slate-900">0</p><p class="mt-1 text-xs text-slate-500">Registros de la jornada</p>
+				</article>
+				<article class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+					<div class="flex items-start justify-between"><p class="text-sm font-medium text-slate-500">Horas extra acumuladas</p><span class="grid h-9 w-9 place-items-center rounded-md bg-amber-50 text-amber-700" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+					<p id="kpi-overtime" class="mt-4 text-3xl font-semibold tabular-nums text-slate-900">0 h</p><p class="mt-1 text-xs text-slate-500">Calculadas a factor 1.5×</p>
+				</article>
+				<article class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+					<div class="flex items-start justify-between"><p class="text-sm font-medium text-slate-500">En almuerzo</p><span class="grid h-9 w-9 place-items-center rounded-md bg-yellow-50 text-yellow-700" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11h16l-1.2 8H5.2L4 11Zm3-3 2 3m3-5v5m5-3-2 3M3 21h18" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+					<p id="kpi-lunch" class="mt-4 text-3xl font-semibold tabular-nums text-slate-900">0</p><p class="mt-1 text-xs text-slate-500">Pausa activa en este momento</p>
+				</article>
+				<article class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+					<div class="flex items-start justify-between"><p class="text-sm font-medium text-slate-500">Alertas de jornada</p><span class="grid h-9 w-9 place-items-center rounded-md bg-rose-50 text-rose-700" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 9 16H3l9-16Zm0 6v4m0 3h.01" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+					<p id="kpi-alerts" class="mt-4 text-3xl font-semibold tabular-nums text-slate-900">0</p><p class="mt-1 text-xs text-slate-500">Colaboradores con horas extra</p>
+				</article>
+			</section>
+
+			<section id="asistencia" class="hidden overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+				<div class="flex flex-col gap-4 border-b border-gray-200 px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
+					<div><h2 class="text-base font-semibold text-slate-900">Registro de asistencia</h2><p id="table-count" class="mt-1 text-sm text-slate-500">Colaboradores registrados hoy</p></div>
+					<div class="flex flex-col gap-2 sm:flex-row">
+						<label class="relative block">
+							<span class="sr-only">Buscar colaborador</span>
+							<svg viewBox="0 0 24 24" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5" stroke-linecap="round"/></svg>
+							<input id="search" type="search" placeholder="Buscar nombre o cédula" class="h-10 w-full rounded-md border border-gray-300 bg-white pl-9 pr-3 text-sm outline-none placeholder:text-slate-400 focus:border-teal-600 focus:ring-2 focus:ring-teal-100 sm:w-56">
+						</label>
+						<label><span class="sr-only">Filtrar por estado</span><select id="status-filter" class="h-10 w-full rounded-md border border-gray-300 bg-white px-3 text-sm text-slate-700 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100 sm:w-44"><option value="all">Todos los estados</option><option value="normal">Normal</option><option value="lunch">En almuerzo</option><option value="overtime">Exceso (extras)</option></select></label>
+					</div>
+				</div>
+				<div class="overflow-x-auto">
+					<table class="w-full min-w-[920px] border-collapse text-left text-sm">
+						<thead class="bg-gray-50 text-xs font-semibold uppercase tracking-wide text-slate-500"><tr>
+							<th scope="col" class="px-5 py-3.5">Colaborador / Cédula</th><th scope="col" class="px-4 py-3.5">Tipo de jornada</th><th scope="col" class="px-4 py-3.5">Entrada</th><th scope="col" class="px-4 py-3.5">Almuerzo</th><th scope="col" class="px-4 py-3.5">Salida</th><th scope="col" class="px-4 py-3.5 text-right">H. ordinarias</th><th scope="col" class="px-4 py-3.5 text-right">H. extra</th><th scope="col" class="px-5 py-3.5">Estado</th>
+						</tr></thead>
+						<tbody id="attendance-rows" class="divide-y divide-gray-100"></tbody>
+					</table>
+				</div>
+				<div id="empty-state" class="hidden px-5 py-12 text-center text-sm text-slate-500">No hay colaboradores que coincidan con la búsqueda.</div>
+				<div class="flex flex-col gap-1 border-t border-gray-200 bg-gray-50 px-5 py-3 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between"><span>Cálculo diario: tiempo transcurrido menos 30 min de almuerzo.</span><span>Los registros son datos ficticios de demostración.</span></div>
+			</section>
+			<footer class="py-5 text-center text-xs text-slate-400"><span>Jornada CR · Zona horaria America/Costa_Rica</span><span class="mt-1 block font-medium">By: Orbe Systems</span></footer>
+		</main>
+	</div>
+
+	<script>
+		"use strict";
+
+		const TIME_ZONE = "America/Costa_Rica";
+		const salesCurrency = new Intl.NumberFormat("es-CR", { style: "currency", currency: "CRC", maximumFractionDigits: 0 });
+		let drawSchedule = null;
+		let serverClockOffsetMs = 0;
+		let drawScheduleRetryTimer = null;
+		let selectedCategory = "normal";
+		let selectedGame = "ticas";
+		let selectedDrawGroup = null;
+		let selectedVariant = "normal";
+		let selectedDraw = null;
+		let pendingGameSale = null;
+		let lastGameTicket = null;
+		let savingGameSale = false;
+		let saleFeedbackActive = false;
+		let pendingBetItems = [];
+		let dailySalesData = { sales: [], draws: [], totalSold: 0, totalSales: 0 };
+		const RESULT_GAME_IDS = new Set(["ticas", "nicas", "elSalvador", "honduras", "dominicana", "panas", "papaCaliente", "newYork", "parley", "monazos", "tripleta"]);
+		const isResultDrawVisible = draw => RESULT_GAME_IDS.has(draw.gameId) && (draw.gameId !== "parley" || draw.drawLabel === "Nica");
+		const gameInputs = {
+			tiempos: [{ name: "number", label: "Número", length: 2 }],
+			monazos: [{ name: "number", label: "Número de 3 dígitos", length: 3, modality: true }],
+			parley: [{ name: "firstNumber", label: "Primer número", length: 2 }, { name: "secondNumber", label: "Segundo número", length: 2 }],
+			tripleta: [{ name: "number", label: "Número de 3 dígitos", length: 3 }]
+		};
+		const gameCategories = {
+			normal: [
+				{ id: "ticas", label: "Costa Rica · Ticas" },
+				{ id: "nicas", label: "Nicaragua · Nicas" },
+				{ id: "honduras", label: "Honduras" },
+				{ id: "elSalvador", label: "El Salvador" },
+				{ id: "dominicana", label: "República Dominicana" },
+				{ id: "panas", label: "Panamá · Panameña" },
+				{ id: "papaCaliente", label: "Papá Caliente" },
+				{ id: "newYork", label: "Estados Unidos · New York" }
+			],
+			parley: [
+				{ id: "parley", label: "Nicaragua · Nica", drawGroup: "Nica" }
+			],
+			special: [
+				{ id: "monazos", label: "Costa Rica · Monazo" },
+				{ id: "tripleta", label: "Nicaragua · Tripleta", drawGroup: "Nica" }
+			]
+		};
+		const LUNCH_MINUTES = 30;
+		const shiftLimits = { Diurna: 8 * 60, Nocturna: 6 * 60, Mixta: 7 * 60 };
+		const employees = [
+			{ name: "María Fernanda Rojas", id: "1-1023-4567", shift: "Diurna", entry: "07:00", lunch: "12:00 - 12:30", exit: "15:30" },
+			{ name: "José Andrés Vargas", id: "1-0842-9316", shift: "Diurna", entry: "07:00", lunch: "12:00 - 12:30", exit: "16:30" },
+			{ name: "Daniela Solís Mora", id: "1-1456-0789", shift: "Nocturna", entry: "19:00", lunch: "23:00 - 23:30", exit: "02:30" },
+			{ name: "Andrés Jiménez Castro", id: "1-0672-4510", shift: "Mixta", entry: "14:00", lunch: "17:30 - 18:00", exit: "21:30" },
+			{ name: "Valeria Chaves León", id: "1-1734-0265", shift: "Diurna", entry: "08:00", lunch: "12:00 - en curso", exit: "En curso", activeLunch: true }
+		];
+
+		function timeToMinutes(time) {
+			const [hours, minutes] = time.split(":").map(Number);
+			return hours * 60 + minutes;
+		}
+
+		function calculateShift(employee) {
+			if (!employee.exit || employee.exit === "En curso") return { ordinary: null, overtime: 0 };
+			const start = timeToMinutes(employee.entry);
+			let end = timeToMinutes(employee.exit);
+			if (end <= start) end += 24 * 60;
+			const effective = Math.max(0, end - start - LUNCH_MINUTES);
+			const ordinary = Math.min(effective, shiftLimits[employee.shift]);
+			return { ordinary, overtime: Math.max(0, effective - ordinary) };
+		}
+
+		function formatHours(minutes) {
+			if (minutes === null) return "—";
+			const hours = Math.floor(minutes / 60);
+			const remainder = minutes % 60;
+			return remainder ? `${hours}:${String(remainder).padStart(2, "0")}` : `${hours}:00`;
+		}
+
+		function statusFor(employee, result) {
+			if (employee.activeLunch) return { key: "lunch", label: "En almuerzo", classes: "bg-amber-50 text-amber-800 ring-amber-600/20", dot: "bg-amber-500" };
+			if (result.overtime > 0) return { key: "overtime", label: "Exceso (extras)", classes: "bg-rose-50 text-rose-700 ring-rose-600/20", dot: "bg-rose-500" };
+			return { key: "normal", label: "Normal", classes: "bg-emerald-50 text-emerald-700 ring-emerald-600/20", dot: "bg-emerald-500" };
+		}
+
+		function renderRows() {
+			const searchTerm = document.getElementById("search").value.trim().toLocaleLowerCase("es-CR");
+			const selectedStatus = document.getElementById("status-filter").value;
+			const filtered = employees.map(employee => {
+				const result = calculateShift(employee);
+				return { employee, result, status: statusFor(employee, result) };
+			}).filter(({ employee, status }) => {
+				const matchesSearch = `${employee.name} ${employee.id}`.toLocaleLowerCase("es-CR").includes(searchTerm);
+				return matchesSearch && (selectedStatus === "all" || status.key === selectedStatus);
+			});
+
+			document.getElementById("attendance-rows").innerHTML = filtered.map(({ employee, result, status }, index) => `
+				<tr class="row-enter hover:bg-gray-50/80" style="animation-delay:${index * 35}ms">
+					<td class="whitespace-nowrap px-5 py-4"><div class="font-medium text-slate-900">${employee.name}</div><div class="mt-0.5 text-xs text-slate-500">${employee.id}</div></td>
+					<td class="whitespace-nowrap px-4 py-4 text-slate-600">${employee.shift}</td>
+					<td class="whitespace-nowrap px-4 py-4 font-mono tabular-nums text-slate-700">${employee.entry}</td>
+					<td class="whitespace-nowrap px-4 py-4 text-slate-600">${employee.lunch}</td>
+					<td class="whitespace-nowrap px-4 py-4 font-mono tabular-nums text-slate-700">${employee.exit}</td>
+					<td class="whitespace-nowrap px-4 py-4 text-right font-mono tabular-nums text-slate-700">${formatHours(result.ordinary)}</td>
+					<td class="whitespace-nowrap px-4 py-4 text-right font-mono tabular-nums ${result.overtime ? "font-semibold text-rose-700" : "text-slate-500"}">${formatHours(result.overtime)}</td>
+					<td class="whitespace-nowrap px-5 py-4"><span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset ${status.classes}"><span class="h-1.5 w-1.5 rounded-full ${status.dot}"></span>${status.label}</span></td>
+				</tr>`).join("");
+			document.getElementById("empty-state").classList.toggle("hidden", filtered.length !== 0);
+			document.getElementById("attendance-rows").classList.toggle("hidden", filtered.length === 0);
+			document.getElementById("table-count").textContent = `${filtered.length} de ${employees.length} colaboradores`;
+		}
+
+		function renderSummary() {
+			const results = employees.map(employee => ({ employee, result: calculateShift(employee) }));
+			const overtime = results.reduce((sum, item) => sum + item.result.overtime, 0);
+			const alerts = results.filter(item => item.result.overtime > 0).length;
+			const lunchCount = employees.filter(employee => employee.activeLunch).length;
+			document.getElementById("kpi-active").textContent = employees.length;
+			document.getElementById("kpi-overtime").textContent = `${formatHours(overtime)} h`;
+			document.getElementById("kpi-lunch").textContent = lunchCount;
+			document.getElementById("kpi-alerts").textContent = alerts;
+		}
+
+		function updateClock() {
+			const now = new Date(Date.now() + serverClockOffsetMs);
+			document.getElementById("clock").textContent = new Intl.DateTimeFormat("es-CR", {
+				timeZone: TIME_ZONE, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true
+			}).format(now);
+			document.getElementById("today-date").textContent = new Intl.DateTimeFormat("es-CR", {
+				timeZone: TIME_ZONE, weekday: "long", year: "numeric", month: "long", day: "numeric"
+			}).format(now);
+			updateDrawAvailability(now);
+		}
+
+		function costaRicaMinutes(date) {
+			const parts = new Intl.DateTimeFormat("en-GB", {
+				timeZone: TIME_ZONE, hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23"
+			}).formatToParts(date);
+			const value = type => Number(parts.find(part => part.type === type).value);
+			return value("hour") * 60 + value("minute") + value("second") / 60 + date.getMilliseconds() / 60_000;
+		}
+
+		function formatDrawTime(time) {
+			const [rawHour, minute] = time.split(":").map(Number);
+			const period = rawHour < 12 ? "a. m." : "p. m.";
+			const hour = rawHour % 12 || 12;
+			return `${hour}:${String(minute).padStart(2, "0")} ${period}`;
+		}
+
+		function drawCloseMinute(draw) {
+			const [hours, minutes] = draw.time.split(":").map(Number);
+			return hours * 60 + minutes - drawSchedule.closeMinutesBefore;
+		}
+
+		function scheduledDrawsForToday(game, date = new Date()) {
+			const localDate = currentCostaRicaDate(date);
+			const weekday = new Date(`${localDate}T00:00:00.000Z`).getUTCDay();
+			return game.draws.filter(draw => !draw.weekdays || draw.weekdays.includes(weekday));
+		}
+
+		function selectedVariantConfig() {
+			return variantsForGame(selectedGame).find(variant => variant.id === selectedVariant) || null;
+		}
+
+		function variantsForGame(gameId) {
+			return (drawSchedule?.games[gameId]?.variants || [])
+				.filter(variant => !variant.redBallOnly)
+				.filter(variant => selectedCategory !== "normal" || !/^(monazo|tripleta)/.test(variant.id));
+		}
+
+		function renderGameChoices() {
+			const choices = gameCategories[selectedCategory];
+			document.getElementById("game-choice-label").textContent = selectedCategory === "normal" ? "País" : "Juego y país";
+			document.getElementById("game-choice-buttons").innerHTML = choices.map(choice => {
+				const active = choice.id === selectedGame && (choice.drawGroup || null) === selectedDrawGroup;
+				const className = active
+					? "rounded-md border border-teal-700 bg-teal-700 px-3 py-2.5 text-left text-sm font-semibold text-white"
+					: "rounded-md border border-gray-300 bg-white px-3 py-2.5 text-left text-sm font-semibold text-slate-700 hover:border-teal-500";
+				return `<button type="button" data-game="${choice.id}" data-draw-group="${choice.drawGroup || ""}" aria-pressed="${active}" class="${className}">${choice.label}</button>`;
+			}).join("");
+		}
+
+		function selectedGameChoiceLabel() {
+			return gameCategories[selectedCategory]
+				.find(choice => choice.id === selectedGame && (choice.drawGroup || null) === selectedDrawGroup)?.label
+				|| drawSchedule?.games[selectedGame]?.drawLabel
+				|| "";
+		}
+
+		function prizeDescription(variant) {
+			if (!variant) return "Premio paga x80";
+			if (variant.combination) return `Premio paga x${variant.prizeMultiplier} · cubre permutaciones`;
+			if (variant.redBallMultiplier) return `Premio paga x${variant.prizeMultiplier} · bola roja x${variant.redBallMultiplier}`;
+			return `Premio paga x${variant.prizeMultiplier}`;
+		}
+
+		function updateSaleButton() {
+			const canSubmit = Boolean(selectedDraw) && !savingGameSale;
+			document.getElementById("game-sale-submit").disabled = !canSubmit;
+			document.getElementById("game-sale-no-print").disabled = !canSubmit;
+			renderTicketPreview();
+			if (saleFeedbackActive) return;
+			if (!selectedDraw) document.getElementById("sale-state").textContent = "No hay un sorteo abierto seleccionado.";
+			else if (!pendingBetItems.length) document.getElementById("sale-state").textContent = "Añade números o ingresa número y monto para registrar la compra.";
+			else document.getElementById("sale-state").textContent = "Ticket listo. Revisa el desglose y selecciona cómo registrarlo.";
+		}
+
+		function updateDrawAvailability(now = new Date()) {
+			if (!drawSchedule) return;
+			const game = drawSchedule.games[selectedGame];
+			const nowMinutes = costaRicaMinutes(now);
+			const todayDraws = scheduledDrawsForToday(game, now)
+				.filter(draw => !selectedDrawGroup || draw.drawLabel === selectedDrawGroup);
+			const openDraws = todayDraws.filter(draw => nowMinutes < drawCloseMinute(draw));
+			const openIds = new Set(openDraws.map(draw => draw.id));
+			const container = document.getElementById("draw-buttons");
+			if (selectedDraw && !openIds.has(selectedDraw)) selectedDraw = null;
+			if (!selectedDraw && openDraws.length) selectedDraw = openDraws[0].id;
+			for (const button of container.querySelectorAll("[data-draw-id]")) {
+				if (!todayDraws.some(draw => draw.id === button.dataset.drawId)) button.remove();
+			}
+			for (const draw of todayDraws) {
+				let button = container.querySelector(`[data-draw-id="${draw.id}"]`);
+				if (!button) {
+					button = document.createElement("button");
+					button.type = "button";
+					button.dataset.drawId = draw.id;
+					button.className = "min-w-32 rounded-md border px-3 py-2 text-left transition-colors";
+					container.append(button);
+				}
+				const isOpen = openIds.has(draw.id);
+				const isSelected = selectedDraw === draw.id;
+				const drawLabel = draw.drawLabel || game.drawLabel;
+				button.disabled = !isOpen;
+				button.setAttribute("aria-pressed", String(isSelected));
+				button.className = !isOpen
+					? "min-w-32 cursor-not-allowed rounded-md border border-gray-200 bg-gray-100 px-3 py-2 text-left text-slate-400"
+					: isSelected
+					? "min-w-32 rounded-md border border-teal-700 bg-teal-700 px-3 py-2 text-left text-white transition-colors"
+					: "min-w-32 rounded-md border border-gray-300 bg-white px-3 py-2 text-left text-slate-700 transition-colors hover:border-teal-500";
+				if (isOpen) {
+					const secondsLeft = Math.max(0, Math.ceil((drawCloseMinute(draw) - nowMinutes) * 60));
+					const hoursLeft = Math.floor(secondsLeft / 3600);
+					const minutesLeft = Math.floor((secondsLeft % 3600) / 60);
+					const secondsRemainder = secondsLeft % 60;
+					const countdown = hoursLeft ? `${hoursLeft}h ${String(minutesLeft).padStart(2, "0")}m` : `${String(minutesLeft).padStart(2, "0")}:${String(secondsRemainder).padStart(2, "0")}`;
+					button.setAttribute("aria-label", `${drawLabel}, ${formatDrawTime(draw.time)}${isSelected ? ", seleccionado" : ", seleccionar"}. Cierra en ${countdown}.`);
+					button.innerHTML = `<span class="block text-sm font-semibold">${drawLabel}</span><span class="mt-0.5 block text-base font-semibold">${formatDrawTime(draw.time)}</span><span class="mt-0.5 block text-sm ${isSelected ? "text-teal-100" : "text-slate-600"}">${isSelected ? "Seleccionado" : "Toca para seleccionar"} · ${countdown}</span>`;
+				} else {
+					button.setAttribute("aria-label", `${drawLabel}, ${formatDrawTime(draw.time)}. Cerrado.`);
+					button.innerHTML = `<span class="block text-xs font-semibold">${drawLabel}</span><span class="mt-0.5 block text-sm font-semibold">${formatDrawTime(draw.time)}</span><span class="mt-0.5 block text-[11px]">Cerrado</span>`;
+				}
+			}
+			document.getElementById("draw-empty").classList.toggle("hidden", openDraws.length !== 0);
+			const selectedDrawDetails = openDraws.find(draw => draw.id === selectedDraw);
+			document.getElementById("draw-selection-status").textContent = selectedDrawDetails
+				? `${selectedDrawDetails.drawLabel || game.drawLabel} · ${formatDrawTime(selectedDrawDetails.time)} seleccionado.`
+				: "No hay sorteos abiertos para seleccionar.";
+			updateSaleButton();
+		}
+
+		function renderGameFields() {
+			const container = document.getElementById("number-fields");
+			const variant = selectedVariantConfig();
+			const gameSettings = variant
+				? { label: variant.digits === 2 ? "Número de 2 dígitos" : `Número de ${variant.digits} dígitos`, token: `\\d{${variant.digits}}` }
+				: {
+					tiempos: { label: "Número", token: "\\d{2}" },
+					monazos: { label: "Número de 3 dígitos", token: "\\d{3}" },
+					parley: { label: "Pares de números", token: "\\d{2}[/-]?\\d{2}" },
+					tripleta: { label: "Número de 3 dígitos", token: "\\d{3}" }
+				}[selectedGame] || { label: "Número de 2 dígitos", token: "\\d{2}" };
+			const numberPattern = `${gameSettings.token}(?:[+\\s,]+${gameSettings.token})*`;
+			const variants = variantsForGame(selectedGame);
+			const availableVariants = variants.filter(item => item.availableForSale !== false);
+			const modalityMarkup = variants.length > 1
+				? `<label class="block sm:col-span-2"><span class="mb-1.5 block text-sm font-medium text-slate-700">Modalidad</span><select id="grouped-modality" class="h-10 w-full rounded-md border border-gray-300 px-3 text-sm outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100">${availableVariants.map(item => `<option value="${item.id}" ${item.id === selectedVariant ? "selected" : ""}>${item.label} · paga x${item.prizeMultiplier}${item.redBallMultiplier ? ` / x${item.redBallMultiplier} con bola roja` : ""}${item.combination ? " · con permutaciones" : ""}</option>`).join("")}</select></label>`
+				: "";
+			const redBallAmountMarkup = variant?.id === "reventado"
+				? '<label class="block"><span class="mb-1.5 block text-sm font-semibold text-slate-700">Monto reventado (₡) · opcional</span><input id="red-ball-amount" type="number" min="2" step="1" inputmode="numeric" aria-describedby="red-ball-help" placeholder="Ej.: 200" class="h-10 w-full rounded-md border border-gray-300 px-3 text-base outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"><span id="red-ball-help" class="mt-1 block text-sm text-slate-600">Se aplica por número y paga con bola roja.</span></label>'
+				: "";
+			const numberExample = selectedGame === "parley" ? "12/34 + 56/78" : variant?.digits === 3 || selectedGame === "monazos" || selectedGame === "tripleta" ? "123 + 456" : "12 + 34 + 56";
+			const numberHint = selectedGame === "parley"
+				? "Escribe dos pares separados por /. Puedes añadir varias combinaciones con +."
+				: `Puedes ingresar varios números separados por +. Ejemplo: ${numberExample}.`;
+			container.innerHTML = `<label class="block"><span class="mb-1.5 block text-base font-semibold text-slate-700">${gameSettings.label}</span><input id="number-expression" type="text" inputmode="text" maxlength="500" pattern="${numberPattern}" autocomplete="off" aria-describedby="number-help" placeholder="Ej.: ${numberExample}" class="h-11 w-full rounded-md border border-gray-300 px-3 font-mono text-base tabular-nums outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"><span id="number-help" class="mt-1 block text-sm text-slate-600">${numberHint}</span></label><label class="block"><span class="mb-1.5 block text-base font-semibold text-slate-700">Inversión (₡) por número</span><input id="grouped-total" type="number" min="1" step="1" inputmode="numeric" aria-describedby="amount-help" placeholder="Ej.: 200" class="h-11 w-full rounded-md border border-gray-300 px-3 text-base outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"><span id="amount-help" class="mt-1 block text-sm text-slate-600">Este monto se asignará a cada número.</span></label>${modalityMarkup}${redBallAmountMarkup}`;
+
+			const numberInput = container.querySelector("#number-expression");
+			const amountInput = container.querySelector("#grouped-total");
+			const redBallAmountInput = container.querySelector("#red-ball-amount");
+
+			numberInput.addEventListener("keydown", event => {
+				if (event.key === "Enter") {
+					event.preventDefault();
+					if (numberInput.value.trim()) {
+						const nextInput = redBallAmountInput || amountInput;
+						nextInput.focus();
+						nextInput.select();
+					}
+				}
+			});
+
+			amountInput.addEventListener("keydown", event => {
+				if (event.key === "Enter") {
+					event.preventDefault();
+					if (amountInput.value) {
+						if (redBallAmountInput) redBallAmountInput.focus();
+						else addGroupedNumbers(event);
+					}
+				}
+			});
+			redBallAmountInput?.addEventListener("input", () => {
+				const initialAmount = Number(amountInput.value);
+				redBallAmountInput.min = String(Number.isSafeInteger(initialAmount) && initialAmount > 0 ? initialAmount + 1 : 2);
+			});
+			redBallAmountInput?.addEventListener("keydown", event => {
+				if (event.key === "Enter") {
+					event.preventDefault();
+					addGroupedNumbers(event);
+				}
+			});
+
+			numberInput.addEventListener("paste", event => {
+				const clipboardText = event.clipboardData?.getData("text") || "";
+				const parts = clipboardText.split(/\t|\r?\n/);
+				if (parts.length < 2) return;
+				const pastedTotal = parts.pop().trim().replace(/^[₡\s]+|[\s,]+$/g, "");
+				if (!/^\d+$/.test(pastedTotal)) return;
+				event.preventDefault();
+				numberInput.value = parts.join("+").trim();
+				amountInput.value = pastedTotal;
+				document.getElementById("bet-entry-state").textContent = "Números y monto copiados. Revisa y añádelos al ticket.";
+			});
+
+			container.querySelectorAll("input").forEach(input => input.addEventListener("input", () => {
+				document.getElementById("bet-entry-state").textContent = "Se asignará este monto a cada número ingresado.";
+			}));
+			container.querySelector("#grouped-modality")?.addEventListener("change", event => {
+				selectedVariant = event.target.value;
+				pendingBetItems = [];
+				renderGameFields();
+				document.getElementById("bet-entry-state").textContent = "Modalidad actualizada. Ingresa los números de esta modalidad.";
+				updateSaleButton();
+			});
+			updateSaleButton();
+		}
+
+		function splitNumberExpression(expression) {
+			const clean = expression.replace(/[,;]/g, "+").replace(/\s+/g, "+");
+			const rawParts = clean.split("+").map(part => part.trim()).filter(Boolean);
+			if (!rawParts.length || rawParts.length > 100) {
+				throw new Error("Revisa la cantidad de números ingresados.");
+			}
+			const normalized = rawParts.map(part => {
+				if (selectedGame === "parley") {
+					if (/^\d{4}$/.test(part)) return `${part.slice(0, 2)}/${part.slice(2)}`;
+					return part.replace("-", "/");
+				}
+				return part;
+			});
+			const variant = selectedVariantConfig();
+			if (variant) {
+				const pattern = new RegExp(`^\\d{${variant.digits}}$`);
+				if (normalized.some(number => !pattern.test(number))) {
+					throw new Error(`Cada número debe tener ${variant.digits} dígitos para ${variant.label}.`);
+				}
+				if (variant.uniqueDigits && normalized.some(number => new Set(number).size !== number.length)) {
+					throw new Error("Cada número combinado debe tener sus 3 dígitos diferentes.");
+				}
+				return normalized;
+			}
+			const pattern = {
+				tiempos: /^\d{2}$/,
+				monazos: /^\d{3}$/,
+				parley: /^\d{2}\/\d{2}$/,
+				tripleta: /^\d{3}$/
+			}[selectedGame];
+			if (normalized.some(number => !pattern.test(number))) {
+				throw new Error("Revisa el formato y la cantidad de números separados por + o espacio.");
+			}
+			return normalized;
+		}
+
+		function addGroupedNumbers(event) {
+			event.preventDefault();
+			const input = document.getElementById("number-expression");
+			const totalInput = document.getElementById("grouped-total");
+			const modalityInput = document.getElementById("grouped-modality");
+			const unitAmount = Number(totalInput.value);
+			try {
+				if (!input.value.trim()) throw new Error("Escribe al menos un número.");
+				if (!Number.isSafeInteger(unitAmount) || unitAmount <= 0) throw new Error("Escribe el monto en colones por número.");
+				const numbers = splitNumberExpression(input.value);
+				if (pendingBetItems.length + numbers.length > 100) throw new Error("El ticket no puede tener más de 100 números.");
+				const modality = selectedVariantConfig()?.id || modalityInput?.value.trim() || "";
+				if (selectedGame === "monazos" && !modality) throw new Error("Selecciona o escribe la modalidad de Monazos.");
+				const redBallAmountInput = document.getElementById("red-ball-amount");
+				const redBallAmount = redBallAmountInput?.value.trim();
+				if (redBallAmount) {
+					const amount = Number(redBallAmount);
+					if (modality !== "reventado") throw new Error("El monto reventado solo está disponible en Reventado.");
+					if (!Number.isSafeInteger(amount) || amount <= unitAmount) throw new Error("El monto reventado debe ser mayor que el monto inicial.");
+				}
+				pendingBetItems.push(...numbers.map(number => ({
+					number,
+					amount: unitAmount,
+					modality,
+					...(redBallAmount ? { redBallAmount: Number(redBallAmount) } : {})
+				})));
+				input.value = "";
+				totalInput.value = "";
+				if (redBallAmountInput) redBallAmountInput.value = "";
+				if (modalityInput) modalityInput.value = "Directo";
+				document.getElementById("bet-entry-state").textContent = `${numbers.length} número${numbers.length === 1 ? "" : "s"} añadido${numbers.length === 1 ? "" : "s"} a ₡${unitAmount} c/u al ticket${redBallAmount ? `; monto reventado ₡${redBallAmount} c/u` : ""}.`;
+				saleFeedbackActive = false;
+				updateSaleButton();
+				document.getElementById("number-expression")?.focus();
+			} catch (error) {
+				document.getElementById("bet-entry-state").textContent = error.message;
+			}
+		}
+
+		function renderTicketPreview() {
+			const total = pendingBetItems.reduce((sum, item) => sum + item.amount + (item.redBallAmount || 0), 0);
+			const taxCode = document.getElementById("tax-code-input")?.value.trim();
+			document.getElementById("ticket-line-count").textContent = `${pendingBetItems.length} número${pendingBetItems.length === 1 ? "" : "s"}`;
+			document.getElementById("ticket-total").textContent = salesCurrency.format(total);
+			let linesMarkup = pendingBetItems.length
+				? pendingBetItems.map((item, index) => `<div class="flex items-center justify-between gap-3"><span><span class="font-mono">${escapeTicketText(item.number)}</span>${item.modality ? ` · ${escapeTicketText(modalityLabel(item.modality))}` : ""}<span class="block text-xs text-slate-500">${item.redBallAmount ? `Monto reventado: ${salesCurrency.format(item.redBallAmount)} · x200 con bola roja` : ""}</span></span><span class="flex items-center gap-3"><strong class="font-medium tabular-nums">${salesCurrency.format(item.amount + (item.redBallAmount || 0))}</strong><button type="button" data-remove-ticket-item="${index}" aria-label="Quitar número ${escapeTicketText(item.number)}" class="grid h-7 w-7 place-items-center rounded-md text-slate-500 hover:bg-gray-200"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14" stroke-linecap="round"/></svg></button></span></div>`).join("")
+				: '<p>Agrega números y montos para revisar el ticket.</p>';
+			if (taxCode) {
+				linesMarkup += `<div class="mt-2 border-t border-gray-200 pt-2 text-xs font-medium text-slate-700">Código Tax: <span class="font-semibold text-slate-900">${escapeTicketText(taxCode)}</span></div>`;
+			}
+			linesMarkup += `<div class="mt-2.5 inline-flex items-center rounded-md border border-teal-200 bg-teal-50 px-2.5 py-1 text-xs font-semibold text-teal-800">${prizeDescription(selectedVariantConfig())}</div>`;
+			document.getElementById("ticket-preview-lines").innerHTML = linesMarkup;
+		}
+
+		const DEFAULT_SCHEDULE = { timezone: "America/Costa_Rica", closeMinutesBefore: 5, games: {"tiempos":{"label":"Tiempos Normales","drawLabel":"Nuevos Tiempos","draws":[{"id":"tiempos-1255","time":"12:55","drawLabel":"Nuevos Tiempos"},{"id":"tiempos-1630","time":"16:30","drawLabel":"Nuevos Tiempos"},{"id":"tiempos-1930","time":"19:30","drawLabel":"Nuevos Tiempos"}]},"monazos":{"label":"3 Monazos","drawLabel":"Monazos","draws":[{"id":"monazos-1255","time":"12:55","drawLabel":"Monazos"},{"id":"monazos-1630","time":"16:30","drawLabel":"Monazos"},{"id":"monazos-1930","time":"19:30","drawLabel":"Monazos"}],"variants":[{"id":"monazo","label":"Monazo","digits":3,"prizeMultiplier":750,"availableForSale":false},{"id":"monazo_normal","label":"Monazo normal","digits":3,"prizeMultiplier":750},{"id":"monazo_combinado","label":"Monazo combinado","digits":3,"prizeMultiplier":125,"uniqueDigits":true,"combination":true}]},"parley":{"label":"Parley","drawLabel":"Nica / Diaria","draws":[{"id":"parley-nica-1100","time":"11:00","drawLabel":"Nica"},{"id":"parley-nica-1500","time":"15:00","drawLabel":"Nica"},{"id":"parley-nica-2100","time":"21:00","drawLabel":"Nica"},{"id":"parley-diaria-1100","time":"11:00","drawLabel":"Diaria","availableForSale":false},{"id":"parley-diaria-1500","time":"15:00","drawLabel":"Diaria","availableForSale":false},{"id":"parley-diaria-2100","time":"21:00","drawLabel":"Diaria","availableForSale":false}]},"tripleta":{"label":"Tripleta","drawLabel":"Nica / Diaria","draws":[{"id":"tripleta-nica-1100","time":"11:00","drawLabel":"Nica"},{"id":"tripleta-nica-1500","time":"15:00","drawLabel":"Nica"},{"id":"tripleta-nica-2100","time":"21:00","drawLabel":"Nica"},{"id":"tripleta-diaria-1100","time":"11:00","drawLabel":"Diaria","availableForSale":false,"resultsEnabled":true},{"id":"tripleta-diaria-1500","time":"15:00","drawLabel":"Diaria","availableForSale":false,"resultsEnabled":true},{"id":"tripleta-diaria-2100","time":"21:00","drawLabel":"Diaria","availableForSale":false,"resultsEnabled":true}],"variants":[{"id":"tripleta","label":"Tripleta","digits":3,"prizeMultiplier":750,"availableForSale":false},{"id":"tripleta_normal","label":"Tripleta normal","digits":3,"prizeMultiplier":750},{"id":"tripleta_combinado","label":"Tripleta combinado","digits":3,"prizeMultiplier":125,"uniqueDigits":true,"combination":true}]},"ticas":{"label":"Ticas","drawLabel":"Ticas","draws":[{"time":"12:55","id":"ticas-1255","drawLabel":"Ticas"},{"time":"16:30","id":"ticas-1630","drawLabel":"Ticas"},{"time":"19:30","id":"ticas-1930","drawLabel":"Ticas"}],"variants":[{"id":"normal","label":"Ticas","digits":2,"prizeMultiplier":80},{"id":"monazo","label":"Monazo","digits":3,"prizeMultiplier":750,"availableForSale":false},{"id":"monazo_normal","label":"Monazo normal","digits":3,"prizeMultiplier":750},{"id":"monazo_combinado","label":"Monazo combinado","digits":3,"prizeMultiplier":125,"uniqueDigits":true,"combination":true},{"id":"reventado","label":"Reventado","digits":2,"prizeMultiplier":70,"redBallMultiplier":200},{"id":"monto_reventado","label":"Monto reventado","digits":2,"prizeMultiplier":200,"redBallOnly":true}]},"nicas":{"label":"Nicas","drawLabel":"Nicas","draws":[{"time":"11:00","id":"nicas-1100","drawLabel":"Nicas"},{"time":"15:00","id":"nicas-1500","drawLabel":"Nicas"},{"time":"18:00","weekdays":[0,2,6],"id":"nicas-1800","drawLabel":"Nicas"},{"time":"21:00","id":"nicas-2100","drawLabel":"Nicas"}],"variants":[{"id":"normal","label":"Nicas","digits":2,"prizeMultiplier":80},{"id":"tripleta","label":"Tripleta","digits":3,"prizeMultiplier":750,"availableForSale":false},{"id":"tripleta_normal","label":"Tripleta normal","digits":3,"prizeMultiplier":750},{"id":"tripleta_combinado","label":"Tripleta combinado","digits":3,"prizeMultiplier":125,"uniqueDigits":true,"combination":true},{"id":"reventado","label":"Reventado","digits":2,"prizeMultiplier":70,"redBallMultiplier":200},{"id":"monto_reventado","label":"Monto reventado","digits":2,"prizeMultiplier":200,"redBallOnly":true}]},"honduras":{"label":"Honduras","drawLabel":"Honduras","draws":[{"time":"11:00","id":"honduras-1100","drawLabel":"Honduras"},{"time":"15:00","id":"honduras-1500","drawLabel":"Honduras"},{"time":"21:00","id":"honduras-2100","drawLabel":"Honduras"}],"variants":[{"id":"normal","label":"Honduras","digits":2,"prizeMultiplier":80}]},"elSalvador":{"label":"El Salvador","drawLabel":"El Salvador","draws":[{"time":"11:00","id":"elSalvador-1100","drawLabel":"El Salvador"},{"time":"18:00","id":"elSalvador-1800","drawLabel":"El Salvador"},{"time":"21:00","id":"elSalvador-2100","drawLabel":"El Salvador"}],"variants":[{"id":"normal","label":"El Salvador","digits":2,"prizeMultiplier":80}]},"dominicana":{"label":"Dominicana","drawLabel":"Dominicana","draws":[{"time":"12:40","id":"dominicana-1240","drawLabel":"Dominicana"},{"time":"16:00","weekdays":[0],"id":"dominicana-1600","drawLabel":"Dominicana"},{"time":"18:55","weekdays":[1,2,3,4,5,6],"id":"dominicana-1855","drawLabel":"Dominicana"}],"variants":[{"id":"normal","label":"Dominicana","digits":2,"prizeMultiplier":80}]},"panas":{"label":"Panameña","drawLabel":"Panameña","draws":[{"time":"14:00","weekdays":[0,3],"id":"panas-1400","drawLabel":"Panameña"}],"variants":[{"id":"normal","label":"Panameña","digits":2,"prizeMultiplier":80}]},"papaCaliente":{"label":"Papá Caliente","drawLabel":"Papá Caliente","draws":[{"time":"11:30","id":"papaCaliente-1130","drawLabel":"Papá Caliente"},{"time":"16:00","id":"papaCaliente-1600","drawLabel":"Papá Caliente"}],"variants":[{"id":"normal","label":"Papá Caliente","digits":2,"prizeMultiplier":80}]},"newYork":{"label":"New York","drawLabel":"New York","draws":[{"time":"12:20","id":"newYork-1220","drawLabel":"New York"},{"time":"20:00","id":"newYork-2000","drawLabel":"New York"}],"variants":[{"id":"normal","label":"New York","digits":2,"prizeMultiplier":80}]}} };
+
+		function getLocalStorageJson(key, defaultValue) {
+			try {
+				const item = localStorage.getItem(key);
+				return item ? JSON.parse(item) : defaultValue;
+			} catch { return defaultValue; }
+		}
+
+		function setLocalStorageJson(key, value) {
+			try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
+		}
+
+		function localDatabaseFallback(url, options = {}) {
+			const parsedUrl = new URL(url, "http://localhost");
+			const path = parsedUrl.pathname;
+			const method = (options.method || "GET").toUpperCase();
+
+			if (method === "GET" && path === "/api/draw-schedule") {
+				return DEFAULT_SCHEDULE;
+			}
+
+			if (method === "GET" && path === "/api/banker/summary") {
+				const balance = getLocalStorageJson("jornada_cr_banker_balance", 0);
+				return { balance, updated_at: new Date().toISOString(), currency: "CRC" };
+			}
+
+			if (method === "POST" && path === "/api/sales") {
+				const body = JSON.parse(options.body || "{}");
+				const sales = getLocalStorageJson("jornada_cr_sales", []);
+				const saleId = sales.length + 1;
+				const serial = `TCR-${String(saleId).padStart(8, "0")}`;
+				const createdAt = new Date().toISOString();
+				const game = DEFAULT_SCHEDULE.games[body.gameId] || { label: "Tiempos" };
+				const draw = game.draws?.find(d => d.id === body.drawId) || { drawLabel: "Sorteo", time: "12:00" };
+				const description = `${game.label} · ${draw.drawLabel} ${draw.time} · ${body.items.map(i => `${i.number} ₡${i.amount}`).join(" | ")}`;
+
+				const newSale = {
+					id: saleId,
+					serial,
+					reference: body.reference || "1",
+					client_name: body.clientName || body.taxCode || "",
+					amount: body.amount,
+					description,
+					game_id: body.gameId,
+					draw_id: body.drawId,
+					detail: body.detail || body.reference,
+					modality: body.modality || "",
+					status: "active",
+					voided_at: null,
+					created_at: createdAt,
+					items: body.items
+				};
+
+				sales.unshift(newSale);
+				setLocalStorageJson("jornada_cr_sales", sales);
+
+				let currentBalance = getLocalStorageJson("jornada_cr_banker_balance", 0);
+				currentBalance += body.amount;
+				setLocalStorageJson("jornada_cr_banker_balance", currentBalance);
+
+				const ledger = getLocalStorageJson("jornada_cr_ledger", []);
+				const ledgerEntry = {
+					id: ledger.length + 1,
+					kind: "sale",
+					description,
+					amount: body.amount,
+					balance_after: currentBalance,
+					created_at: createdAt
+				};
+				ledger.unshift(ledgerEntry);
+				setLocalStorageJson("jornada_cr_ledger", ledger);
+
+				const printJob = { id: saleId, sale_id: saleId, status: "queued", created_at: createdAt };
+				const printJobs = getLocalStorageJson("jornada_cr_print_jobs", []);
+				printJobs.unshift({ printJob, sale: newSale });
+				setLocalStorageJson("jornada_cr_print_jobs", printJobs);
+
+				return { sale: newSale, balance: currentBalance, ledgerEntry, printJob, replayed: false };
+			}
+
+			if (method === "GET" && path === "/api/sales") {
+				const sales = getLocalStorageJson("jornada_cr_sales", []);
+				const activeSales = sales.filter(s => s.status === "active");
+				const totalSold = activeSales.reduce((sum, s) => sum + s.amount, 0);
+				const results = getLocalStorageJson("jornada_cr_draw_results", []);
+
+				const drawsMap = new Map();
+				for (const sale of activeSales) {
+					if (!sale.game_id || !sale.draw_id) continue;
+					const game = DEFAULT_SCHEDULE.games[sale.game_id];
+					const draw = game?.draws?.find(d => d.id === sale.draw_id);
+					if (!game || !draw) continue;
+					const key = `${sale.game_id}|${sale.draw_id}`;
+					const drawRes = results.find(r => r.gameId === sale.game_id && r.drawId === sale.draw_id);
+					sale.winning_number = drawRes ? drawRes.winningNumber : null;
+					sale.winning_items = sale.winning_number ? sale.items.filter(i => i.number === sale.winning_number) : [];
+					sale.is_winner = sale.winning_items.length > 0;
+
+					if (!drawsMap.has(key)) {
+						drawsMap.set(key, {
+							gameId: sale.game_id,
+							drawId: sale.draw_id,
+							gameLabel: game.label,
+							drawLabel: draw.drawLabel,
+							time: draw.time,
+							resultAvailable: true,
+							winningNumber: sale.winning_number,
+							winners: []
+						});
+					}
+					if (sale.is_winner) drawsMap.get(key).winners.push(sale);
+				}
+
+				return {
+					drawDate: new Date().toISOString().slice(0, 10),
+					totalSold,
+					totalSales: activeSales.length,
+					voidedSales: sales.length - activeSales.length,
+					sales,
+					draws: [...drawsMap.values()],
+					results
+				};
+			}
+
+			if (method === "GET" && path.startsWith("/api/sales/")) {
+				const serial = path.split("/")[3];
+				const sales = getLocalStorageJson("jornada_cr_sales", []);
+				const sale = sales.find(s => s.serial.toUpperCase() === serial.toUpperCase());
+				if (!sale) throw new Error("No se encontró la compra.");
+				return { sale };
+			}
+
+			if (method === "POST" && path.includes("/void")) {
+				const parts = path.split("/");
+				const serial = parts[3];
+				const sales = getLocalStorageJson("jornada_cr_sales", []);
+				const sale = sales.find(s => s.serial.toUpperCase() === serial.toUpperCase());
+				if (!sale) throw new Error("No se encontró la compra.");
+				sale.status = "voided";
+				sale.voided_at = new Date().toISOString();
+				setLocalStorageJson("jornada_cr_sales", sales);
+
+				let currentBalance = getLocalStorageJson("jornada_cr_banker_balance", 0);
+				currentBalance = Math.max(0, currentBalance - sale.amount);
+				setLocalStorageJson("jornada_cr_banker_balance", currentBalance);
+
+				return { sale, balance: currentBalance, replayed: false };
+			}
+
+			if (method === "POST" && path === "/api/draw-results") {
+				const body = JSON.parse(options.body || "{}");
+				const results = getLocalStorageJson("jornada_cr_draw_results", []);
+				results.push({ ...body, recordedAt: new Date().toISOString() });
+				setLocalStorageJson("jornada_cr_draw_results", results);
+				return { result: body, replayed: false };
+			}
+
+			if (method === "GET" && path === "/api/banker/ledger") {
+				const entries = getLocalStorageJson("jornada_cr_ledger", []);
+				return { entries };
+			}
+
+			if (method === "POST" && path === "/api/payments") {
+				const body = JSON.parse(options.body || "{}");
+				let currentBalance = getLocalStorageJson("jornada_cr_banker_balance", 0);
+				currentBalance = Math.max(0, currentBalance - Number(body.amount));
+				setLocalStorageJson("jornada_cr_banker_balance", currentBalance);
+
+				const ledger = getLocalStorageJson("jornada_cr_ledger", []);
+				ledger.unshift({
+					id: ledger.length + 1,
+					kind: "payment",
+					description: body.memo ? `Pago al banquero: ${body.memo}` : "Pago al banquero",
+					amount: -Number(body.amount),
+					balance_after: currentBalance,
+					created_at: new Date().toISOString()
+				});
+				setLocalStorageJson("jornada_cr_ledger", ledger);
+				return { balance: currentBalance, replayed: false };
+			}
+
+			if (method === "GET" && path === "/api/print-jobs") {
+				const printJobs = getLocalStorageJson("jornada_cr_print_jobs", []);
+				return { jobs: printJobs };
+			}
+
+			throw new Error("No disponible");
+		}
+
+		const DEMO_MODE = true;
+
+		async function salesApi(url, options = {}) {
+			if (DEMO_MODE) return localDatabaseFallback(url, options);
+			try {
+				const response = await fetch(url, { ...options, headers: { "Content-Type": "application/json", ...options.headers } });
+				const result = await response.json();
+				if (!response.ok) {
+					const error = new Error(result.error || "No se pudo guardar la venta.");
+					error.status = response.status;
+					throw error;
+				}
+				return result;
+			} catch (error) {
+				if (window.location.protocol !== "file:") throw error;
+				return localDatabaseFallback(url, options);
+			}
+		}
+
+		function escapeTicketText(value) {
+			return String(value).replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
+		}
+
+		function modalityLabel(modality) {
+			return Object.values(drawSchedule?.games || {})
+				.flatMap(game => game.variants || [])
+				.find(variant => variant.id === modality)?.label || modality.replaceAll("_", " ");
+		}
+
+		function setupTaxCodeMenu() {
+			const input = document.getElementById("tax-code-input");
+			const menu = document.getElementById("tax-code-menu");
+			let foundSale = null;
+
+			const closeMenu = () => menu.classList.add("hidden");
+			document.getElementById("tax-code-lookup-btn").addEventListener("click", async () => {
+				const serial = input.value.trim();
+				if (!/^TCR-\d{8,}$/i.test(serial)) {
+					document.getElementById("tax-menu-title").textContent = "Código de ticket no válido";
+					document.getElementById("tax-menu-detail").textContent = "Ingrese una serie con formato TCR-00000001 para buscar una compra.";
+					document.getElementById("tax-menu-items").replaceChildren();
+					menu.classList.remove("hidden");
+					return;
+				}
+
+				const lookupButton = document.getElementById("tax-code-lookup-btn");
+				lookupButton.disabled = true;
+				try {
+					const { sale } = await salesApi(`/api/sales/${encodeURIComponent(serial)}`);
+					foundSale = sale;
+					document.getElementById("tax-menu-title").textContent = sale.status === "voided" ? "Ticket anulado" : "Ticket encontrado";
+					document.getElementById("tax-menu-detail").textContent = `${sale.serial} · ${sale.description} · ${salesCurrency.format(sale.amount)}`;
+					document.getElementById("tax-menu-items").innerHTML = sale.items.map(item => `${escapeTicketText(item.number)}${item.modality ? ` · ${escapeTicketText(modalityLabel(item.modality))}` : ""} — ${salesCurrency.format(item.amount)}`).join("<br>");
+					menu.classList.remove("hidden");
+				} catch (error) {
+					foundSale = null;
+					document.getElementById("tax-menu-title").textContent = "No se encontró el ticket";
+					document.getElementById("tax-menu-detail").textContent = error.message;
+					document.getElementById("tax-menu-items").replaceChildren();
+					menu.classList.remove("hidden");
+				} finally {
+					lookupButton.disabled = false;
+				}
+			});
+			document.getElementById("tax-menu-close").addEventListener("click", closeMenu);
+			document.getElementById("tax-menu-copy").addEventListener("click", () => {
+				if (!foundSale || foundSale.status === "voided") return;
+				const gameCategory = Object.entries(gameCategories)
+					.find(([, games]) => games.some(game => game.id === foundSale.game_id))?.[0];
+				if (gameCategory && gameCategory !== selectedCategory) {
+					const categorySelect = document.getElementById("game-category");
+					categorySelect.value = gameCategory;
+					categorySelect.dispatchEvent(new Event("change"));
+				}
+				const saleDraw = drawSchedule?.games[foundSale.game_id]?.draws.find(draw => draw.id === foundSale.draw_id);
+				const targetChoice = gameCategories[selectedCategory].find(choice =>
+					choice.id === foundSale.game_id && (!choice.drawGroup || choice.drawGroup === saleDraw?.drawLabel)
+				);
+				if (targetChoice && (targetChoice.id !== selectedGame || (targetChoice.drawGroup || null) !== selectedDrawGroup)) {
+					[...document.querySelectorAll("#game-choice-buttons [data-game]")].find(button =>
+						button.dataset.game === targetChoice.id && (button.dataset.drawGroup || null) === (targetChoice.drawGroup || null)
+					)?.click();
+				}
+				if (drawSchedule?.games[selectedGame]?.draws.some(draw => draw.id === foundSale.draw_id)) {
+					selectedDraw = foundSale.draw_id;
+					updateDrawAvailability();
+				}
+				pendingBetItems = foundSale.items.reduce((items, item) => {
+					const existing = item.modality === "monto_reventado"
+						? items.find(entry => entry.number === item.number && entry.modality === "reventado" && entry.redBallAmount === undefined)
+						: null;
+					if (existing) existing.redBallAmount = item.amount;
+					else items.push({ number: item.number, amount: item.amount, modality: item.modality || "" });
+					return items;
+				}, []);
+				saleFeedbackActive = false;
+				updateSaleButton();
+				closeMenu();
+			});
+			document.getElementById("tax-menu-revert").addEventListener("click", async () => {
+				if (!foundSale || foundSale.status === "voided" || !window.confirm(`¿Anular el ticket ${foundSale.serial}?`)) return;
+				try {
+					const result = await salesApi(`/api/sales/${encodeURIComponent(foundSale.serial)}/void`, { method: "POST", body: "{}" });
+					foundSale = result.sale;
+					document.getElementById("tax-menu-title").textContent = "Ticket anulado";
+					document.getElementById("tax-menu-detail").textContent = `${foundSale.serial} · ${foundSale.description} · ${salesCurrency.format(foundSale.amount)}`;
+					await refreshBankerBalance();
+				} catch (error) {
+					document.getElementById("tax-menu-title").textContent = "No se pudo anular el ticket";
+					document.getElementById("tax-menu-detail").textContent = error.message;
+				}
+			});
+		}
+
+		function currentCostaRicaDate(date = new Date()) {
+			const parts = new Intl.DateTimeFormat("en-CA", {
+				timeZone: TIME_ZONE, year: "numeric", month: "2-digit", day: "2-digit"
+			}).formatToParts(date);
+			const value = type => parts.find(part => part.type === type).value;
+			return `${value("year")}-${value("month")}-${value("day")}`;
+		}
+
+		function updateSelectedDayLabel() {
+			const selectedDay = document.getElementById("sales-date").value;
+			if (!selectedDay) return;
+			const day = new Date(`${selectedDay}T18:00:00.000Z`);
+			document.getElementById("selected-day-label").textContent = new Intl.DateTimeFormat("es-CR", {
+				timeZone: TIME_ZONE, weekday: "long", year: "numeric", month: "long", day: "numeric"
+			}).format(day);
+			document.getElementById("day-next").disabled = selectedDay >= currentCostaRicaDate();
+		}
+
+		function changeSelectedDay(offset) {
+			const input = document.getElementById("sales-date");
+			const nextDate = new Date(`${input.value}T12:00:00.000Z`);
+			nextDate.setUTCDate(nextDate.getUTCDate() + offset);
+			const newValue = nextDate.toISOString().slice(0, 10);
+			if (newValue > currentCostaRicaDate()) return;
+			input.value = newValue;
+			updateSelectedDayLabel();
+			refreshDailyRegistry();
+		}
+
+		function drawForSale(sale) {
+			return drawSchedule?.games[sale.game_id]?.draws.find(draw => draw.id === sale.draw_id);
+		}
+
+		function renderDailySales() {
+			const search = document.getElementById("customer-search").value.trim().toLocaleLowerCase("es-CR");
+			const visibleSales = dailySalesData.sales.filter(sale =>
+				`${sale.client_name} ${sale.description} ${sale.detail || ""}`.toLocaleLowerCase("es-CR").includes(search)
+			);
+			const rows = document.getElementById("daily-sales-rows");
+			rows.innerHTML = visibleSales.map(sale => {
+				const saleTime = new Intl.DateTimeFormat("es-CR", { timeZone: TIME_ZONE, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true }).format(new Date(sale.created_at));
+				const draw = drawForSale(sale);
+				const state = sale.is_winner
+					? '<span class="mr-2 inline-flex rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700">Ganador</span><button type="button" data-winner-ticket="' + sale.id + '" class="inline-flex h-8 items-center gap-1 rounded-md border border-emerald-200 bg-white px-2 text-xs font-medium text-emerald-800 hover:bg-emerald-50" title="Imprimir comprobante del premio"><svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 8V4h10v4m-10 9H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4h-2m-10-4h10v7H7z" stroke-linejoin="round"/></svg>Imprimir</button>'
+					: sale.winning_number
+						? '<span class="inline-flex rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-slate-600">No ganador</span>'
+						: '<span class="text-xs text-slate-400">Pendiente</span>';
+				return `<tr class="hover:bg-gray-50/80"><td class="whitespace-nowrap px-5 py-4 font-mono text-xs tabular-nums text-slate-600">${escapeTicketText(saleTime)}</td><td class="whitespace-nowrap px-4 py-4"><div class="font-medium text-slate-900">${escapeTicketText(sale.client_name || "Cliente sin identificar")}</div></td><td class="px-4 py-4"><div class="font-medium text-slate-800">${escapeTicketText(sale.description)}</div><div class="mt-0.5 text-xs text-slate-500">${draw ? `${escapeTicketText(draw.drawLabel)} · ${formatDrawTime(draw.time)}` : "Sorteo histórico"}</div></td><td class="whitespace-nowrap px-4 py-4 font-mono tabular-nums text-slate-700">${escapeTicketText(sale.detail || sale.reference)}${sale.modality ? `<span class="ml-2 font-sans text-xs text-slate-500">${escapeTicketText(sale.modality)}</span>` : ""}</td><td class="whitespace-nowrap px-4 py-4 text-right font-mono tabular-nums text-slate-800">${salesCurrency.format(sale.amount)}</td><td class="whitespace-nowrap px-5 py-4">${state}</td></tr>`;
+			}).join("");
+			document.getElementById("daily-sales-rows").classList.toggle("hidden", visibleSales.length === 0);
+			document.getElementById("daily-empty").classList.toggle("hidden", visibleSales.length !== 0);
+			const people = new Set(dailySalesData.sales.map(sale => sale.client_name).filter(Boolean)).size;
+			document.getElementById("daily-count").textContent = `${visibleSales.length} de ${dailySalesData.totalSales} compras · ${people} personas`;
+			document.getElementById("daily-total").textContent = salesCurrency.format(dailySalesData.totalSold);
+			document.getElementById("daily-total-count").textContent = dailySalesData.totalSales;
+			document.getElementById("daily-winner-count").textContent = dailySalesData.sales.filter(sale => sale.is_winner).length;
+		}
+
+		function renderDrawResults() {
+			const container = document.getElementById("draw-results-list");
+			const visibleDraws = dailySalesData.draws.filter(isResultDrawVisible);
+			const resultForm = (draw, existing = false) => {
+				const flexibleCountry = ["ticas", "nicas"].includes(draw.gameId);
+				const multiWinnerGame = ["newYork", "dominicana"].includes(draw.gameId);
+				const length = flexibleCountry ? 3 : multiWinnerGame ? 8 : draw.gameId === "parley" ? 5 : 2;
+				const pattern = flexibleCountry ? "[0-9]{2,3}" : multiWinnerGame ? "[0-9]{2}(/[0-9]{2}){0,2}" : draw.gameId === "parley" ? "[0-9]{2}/[0-9]{2}" : `[0-9]{${length}}`;
+				const placeholder = draw.gameId === "parley" ? "00/00" : multiWinnerGame ? "00/00/00" : flexibleCountry ? "00 o 000" : "0".repeat(length);
+				const redBallOption = flexibleCountry
+					? `<label class="flex items-center gap-2 text-sm text-slate-700"><input type="checkbox" name="redBall" class="rounded border-gray-300"${draw.redBall ? " checked" : ""}> Bola roja (Reventado paga x200)</label>`
+					: "";
+				const value = existing ? ` value="${escapeTicketText(draw.winningNumber)}"` : "";
+				return `<form data-result-game="${draw.gameId}" data-result-draw="${draw.drawId}" data-update-result="${existing}" class="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap"><label class="sr-only">${existing ? "Modificar" : "Guardar"} resultado</label><input name="winningNumber" type="text" required maxlength="${length}" pattern="${pattern}" inputmode="${multiWinnerGame || draw.gameId === "parley" ? "text" : "numeric"}" placeholder="Resultado ${placeholder}"${value} class="h-10 w-full rounded-md border border-gray-300 px-3 font-mono text-sm outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100 sm:max-w-48">${redBallOption}<button type="submit" class="h-10 rounded-md bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-teal-800">${existing ? "Guardar cambios" : "Guardar resultado"}</button></form>`;
+			};
+			container.innerHTML = visibleDraws.map(draw => {
+				let resultContent;
+				if (draw.winningNumber) {
+					const sourceMarkup = draw.sourceUrl
+						? `<a href="${escapeTicketText(draw.sourceUrl)}" target="_blank" rel="noopener noreferrer" class="text-xs font-medium text-teal-700 underline">Fuente</a>`
+						: "";
+					resultContent = `<div class="mt-3 flex flex-wrap items-center gap-2"><span class="text-sm text-slate-600">Número ganador:</span><strong class="font-mono text-lg tabular-nums text-slate-900">${escapeTicketText(draw.winningNumber)}</strong>${draw.redBall ? '<span class="rounded-full bg-rose-50 px-2 py-1 text-xs font-medium text-rose-700">Bola roja</span>' : ""}<span class="rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700">${draw.winners.length} ganadora${draw.winners.length === 1 ? "" : "s"}</span>${sourceMarkup}</div>`;
+					if (draw.winners.length) resultContent += `<div class="mt-3 flex flex-wrap gap-2">${draw.winners.map(sale => `<button type="button" data-winner-ticket="${sale.id}" class="inline-flex h-9 items-center gap-2 rounded-md border border-emerald-200 bg-white px-3 text-sm font-medium text-emerald-800 hover:bg-emerald-50"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 8V4h10v4m-10 9H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4h-2m-10-4h10v7H7z" stroke-linejoin="round"/></svg>Imprimir premio · ${escapeTicketText(sale.client_name)}</button>`).join("")}</div>`;
+					if (dailySalesData.canManageResults) resultContent += resultForm(draw, true);
+				} else if (dailySalesData.canManageResults && draw.resultAvailable && draw.availableForSale !== false) {
+					resultContent = resultForm(draw);
+				} else {
+					resultContent = `<p class="mt-3 text-sm text-slate-500">${draw.availableForSale === false ? "Sorteo diario anterior, conservado solo para consultar ventas históricas." : `Resultado disponible después del sorteo de ${formatDrawTime(draw.time)}.`}</p>`;
+				}
+				const gameLabel = draw.gameId === "ticas" ? "Costa Rica" : draw.gameLabel;
+				return `<article class="px-5 py-4"><div class="flex flex-wrap items-baseline justify-between gap-2"><div><h3 class="font-semibold text-slate-900">${escapeTicketText(gameLabel)} · ${escapeTicketText(draw.drawLabel)}</h3><p class="mt-0.5 text-xs text-slate-500">${formatDrawTime(draw.time)} · ${draw.winners.length} ganadoras de ${dailySalesData.sales.filter(sale => sale.draw_id === draw.drawId).length} compras</p></div>${draw.winningNumber ? '<span class="text-xs font-medium text-emerald-700">Resultado publicado</span>' : ""}</div>${resultContent}</article>`;
+			}).join("");
+			document.getElementById("draw-results-empty").classList.toggle("hidden", visibleDraws.length !== 0);
+		}
+
+		async function refreshDailyRegistry() {
+			const error = document.getElementById("daily-error");
+			error.classList.add("hidden");
+			try {
+				const drawDate = encodeURIComponent(document.getElementById("sales-date").value);
+				dailySalesData = await salesApi(`/api/sales?date=${drawDate}`);
+				renderDailySales();
+				renderDrawResults();
+			} catch (loadError) {
+				error.textContent = loadError.message;
+				error.classList.remove("hidden");
+			}
+		}
+
+		function printWinnerTicket(sale) {
+			const draw = drawForSale(sale);
+			const printWindow = window.open("", "_blank", "width=420,height=640");
+			if (!printWindow) return;
+			const saleDate = new Intl.DateTimeFormat("es-CR", { timeZone: TIME_ZONE, dateStyle: "medium", timeStyle: "medium" }).format(new Date(sale.created_at));
+			const drawName = draw ? `${draw.drawLabel} · ${formatDrawTime(draw.time)}` : sale.description;
+			printWindow.document.open();
+			printWindow.document.write(`<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Comprobante de premio</title><style>body{font-family:Arial,sans-serif;margin:0;padding:22px;color:#111}.ticket{max-width:320px;margin:auto}.center{text-align:center}.rule{border-top:1px dashed #666;margin:14px 0}p{font-size:13px;line-height:1.5;margin:6px 0}.winning{font-size:24px;font-weight:700}.payout{font-size:15px;font-weight:700;text-align:center;margin:8px 0}</style></head><body><main class="ticket"><header class="center"><h2>Comprobante de premio</h2><p>Jornada CR</p></header><div class="rule"></div><p>Serie: <strong>${escapeTicketText(sale.serial)}</strong></p>${sale.client_name ? `<p>Código Tax: <strong>${escapeTicketText(sale.client_name)}</strong></p>` : ""}<p>Fecha de compra: ${escapeTicketText(saleDate)}</p><p>Sorteo: ${escapeTicketText(drawName)}</p><p>Hora del sorteo: ${escapeTicketText(draw?.time || "—")}</p><p>Número jugado: ${escapeTicketText(sale.detail)}</p><p>Número ganador:</p><p class="winning center">${escapeTicketText(sale.winning_number)}</p><div class="rule"></div><p class="payout">${escapeTicketText(sale.prize_label || "Premio paga x80")}</p><p>Premio a pagar: ${salesCurrency.format(sale.winning_payout || sale.amount * 80)}</p><p>Compra registrada: ${salesCurrency.format(sale.amount)}</p></main></body></html>`);
+			printWindow.document.close();
+			let printStarted = false;
+			const startPrint = () => {
+				if (printStarted) return;
+				printStarted = true;
+				printWindow.focus();
+				printWindow.print();
+			};
+			printWindow.addEventListener("load", startPrint, { once: true });
+			setTimeout(() => { if (!printWindow.closed && printWindow.document.readyState === "complete") startPrint(); }, 250);
+		}
+
+		function initializeDailyRegistry() {
+			const dateInput = document.getElementById("sales-date");
+			dateInput.max = currentCostaRicaDate();
+			dateInput.value = dateInput.max;
+			updateSelectedDayLabel();
+			dateInput.addEventListener("change", () => { updateSelectedDayLabel(); refreshDailyRegistry(); });
+			document.getElementById("day-previous").addEventListener("click", () => changeSelectedDay(-1));
+			document.getElementById("day-next").addEventListener("click", () => changeSelectedDay(1));
+			document.getElementById("day-today").addEventListener("click", () => {
+				dateInput.value = currentCostaRicaDate();
+				updateSelectedDayLabel();
+				refreshDailyRegistry();
+			});
+			document.getElementById("customer-search").addEventListener("input", renderDailySales);
+			document.getElementById("daily-sales-rows").addEventListener("click", event => {
+				const button = event.target.closest("[data-winner-ticket]");
+				if (!button) return;
+				const sale = dailySalesData.sales.find(item => item.id === Number(button.dataset.winnerTicket));
+				if (sale) printWinnerTicket(sale);
+			});
+			document.getElementById("draw-results-list").addEventListener("click", event => {
+				const button = event.target.closest("[data-winner-ticket]");
+				if (!button) return;
+				const sale = dailySalesData.sales.find(item => item.id === Number(button.dataset.winnerTicket));
+				if (sale) printWinnerTicket(sale);
+			});
+			document.getElementById("draw-results-list").addEventListener("submit", async event => {
+				const form = event.target.closest("[data-result-game]");
+				if (!form) return;
+				event.preventDefault();
+				const submit = form.querySelector("button[type=submit]");
+				submit.disabled = true;
+				try {
+					const formData = new FormData(form);
+					const response = await salesApi("/api/draw-results", {
+						method: form.dataset.updateResult === "true" ? "PATCH" : "POST",
+						body: JSON.stringify({
+							drawDate: dateInput.value,
+							gameId: form.dataset.resultGame,
+							drawId: form.dataset.resultDraw,
+							winningNumber: formData.get("winningNumber").trim(),
+							redBall: formData.get("redBall") === "on"
+						})
+					});
+					await refreshDailyRegistry();
+					document.getElementById("sale-state").textContent = `Resultado ${response.result.winning_number} guardado; ganadores actualizados.`;
+				} catch (saveError) {
+					document.getElementById("daily-error").textContent = saveError.message;
+					document.getElementById("daily-error").classList.remove("hidden");
+					submit.disabled = false;
+				}
+			});
+			refreshDailyRegistry();
+			setInterval(refreshDailyRegistry, 30_000);
+		}
+
+		function renderSalesTicket(sale, printJob, targetWindow = null) {
+			const ticketWindow = targetWindow || window.open("", "_blank", "width=420,height=640");
+			lastGameTicket = { sale, printJob };
+			if (!ticketWindow) {
+				document.getElementById("sale-ticket-message").textContent = "Venta guardada. El ticket queda disponible para reimprimir desde la cuenta del banquero.";
+				document.getElementById("sale-ticket-retry").classList.remove("hidden");
+				return;
+			}
+			const date = new Intl.DateTimeFormat("es-CR", { timeZone: TIME_ZONE, dateStyle: "medium", timeStyle: "medium" }).format(new Date(sale.created_at));
+			ticketWindow.document.open();
+			ticketWindow.document.write(`<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Ticket ${escapeTicketText(sale.serial)}</title><style>body{font-family:Arial,sans-serif;margin:0;padding:22px;color:#111}.ticket{max-width:340px;margin:auto}.center{text-align:center}.rule{border-top:1px dashed #666;margin:14px 0}p{font-size:13px;line-height:1.5;margin:5px 0}.item{display:flex;justify-content:space-between;gap:12px;font-size:13px;margin:7px 0}.total{font-size:18px;font-weight:700}.payout{font-size:15px;font-weight:700;text-align:center;margin:8px 0}@media print{body{padding:4mm}}</style></head><body><main class="ticket"><header class="center"><h2>Comprobante de compra</h2><p>Jornada CR</p></header><div class="rule"></div><p>Serie: <strong>${escapeTicketText(sale.serial)}</strong></p><p>Fecha: ${escapeTicketText(date)}</p><p>Sorteo: ${escapeTicketText(sale.description.split(" · ").slice(0, 2).join(" · "))}</p>${sale.client_name ? `<p>Código Tax: <strong>${escapeTicketText(sale.client_name)}</strong></p>` : ""}<div class="rule"></div>${sale.items.map(item => `<div class="item"><span>${escapeTicketText(item.number)}${item.modality ? ` · ${escapeTicketText(modalityLabel(item.modality))}` : ""}</span><strong>${salesCurrency.format(item.amount)}</strong></div>`).join("")}<div class="rule"></div><p class="total">Total: ${salesCurrency.format(sale.amount)}</p><div class="rule"></div><p class="payout">${escapeTicketText(sale.prize_label || "Premio paga x80")}</p><div class="rule"></div><p class="center">Gracias por su compra</p></main></body></html>`);
+			ticketWindow.document.close();
+			let printStarted = false;
+			const startPrint = () => {
+				if (printStarted) return;
+				printStarted = true;
+				ticketWindow.focus();
+				ticketWindow.print();
+				salesApi(`/api/print-jobs/${printJob.id}/requested`, { method: "POST", body: "{}" }).catch(() => {});
+			};
+			ticketWindow.addEventListener("load", () => setTimeout(startPrint, 100), { once: true });
+			setTimeout(() => {
+				if (!ticketWindow.closed && ticketWindow.document.readyState === "complete") startPrint();
+			}, 250);
+		}
+
+		async function refreshBankerBalance() {
+			try {
+				const result = await salesApi("/api/banker/summary");
+				document.getElementById("sales-banker-balance").textContent = salesCurrency.format(result.balance);
+			} catch {
+				document.getElementById("sales-banker-balance").textContent = "Servidor desconectado";
+			}
+		}
+
+		async function loadDrawSchedule() {
+			try {
+				const schedule = DEMO_MODE
+					? { ...DEFAULT_SCHEDULE, serverTime: new Date().toISOString() }
+					: await (async () => {
+						const response = await fetch("/api/draw-schedule", { cache: "no-store" });
+						if (!response.ok) throw new Error(`The server returned status ${response.status}.`);
+						return response.json();
+					})();
+				const serverTime = Date.parse(schedule.serverTime);
+				if (!Number.isFinite(serverTime) || !schedule.games?.[selectedGame]?.draws) {
+					throw new Error("El servidor devolvió un calendario inválido.");
+				}
+				drawSchedule = schedule;
+				serverClockOffsetMs = serverTime - Date.now();
+				if (!variantsForGame(selectedGame).some(variant => variant.id === selectedVariant)) {
+					const gameVariants = variantsForGame(selectedGame);
+					selectedVariant = gameVariants.find(variant => variant.id === "normal" && variant.availableForSale !== false)?.id
+						|| gameVariants.find(variant => variant.availableForSale !== false)?.id
+						|| "normal";
+				}
+				document.getElementById("draw-family").textContent = selectedGameChoiceLabel();
+				renderGameFields();
+				document.getElementById("draw-error").classList.add("hidden");
+				if (drawScheduleRetryTimer) clearTimeout(drawScheduleRetryTimer);
+				drawScheduleRetryTimer = null;
+				updateDrawAvailability();
+			} catch (error) {
+				drawSchedule = null;
+				selectedDraw = null;
+				document.getElementById("draw-buttons").replaceChildren();
+				document.getElementById("draw-empty").classList.add("hidden");
+				document.getElementById("draw-error").textContent = `No se pudo cargar el calendario del servidor: ${error.message}. Reintentando…`;
+				document.getElementById("draw-error").classList.remove("hidden");
+				updateSaleButton();
+				drawScheduleRetryTimer = setTimeout(loadDrawSchedule, 3000);
+			}
+		}
+
+		async function initializeSales() {
+			const form = document.getElementById("game-sale-form");
+			const entryForm = document.getElementById("bet-entry-form");
+			const drawButtons = document.getElementById("draw-buttons");
+			const gameChoiceButtons = document.getElementById("game-choice-buttons");
+			const categorySelect = document.getElementById("game-category");
+			const selectGame = (gameId, drawGroup = null) => {
+				saleFeedbackActive = false;
+				selectedGame = gameId;
+				selectedDrawGroup = drawGroup;
+				const gameVariants = variantsForGame(gameId);
+				selectedVariant = gameVariants.find(variant => variant.id === "normal" && variant.availableForSale !== false)?.id
+					|| gameVariants.find(variant => variant.availableForSale !== false)?.id
+					|| "normal";
+				selectedDraw = null;
+				pendingBetItems = [];
+				renderGameChoices();
+				entryForm.reset();
+				form.reset();
+				renderGameFields();
+				document.getElementById("bet-entry-state").textContent = "Se asignará este monto a cada número ingresado.";
+				if (drawSchedule) {
+					document.getElementById("draw-family").textContent = selectedGameChoiceLabel();
+					drawButtons.replaceChildren();
+					updateDrawAvailability();
+				}
+			};
+			renderGameChoices();
+			entryForm.addEventListener("submit", addGroupedNumbers);
+			document.getElementById("ticket-preview-lines").addEventListener("click", event => {
+				const removeButton = event.target.closest("[data-remove-ticket-item]");
+				if (!removeButton) return;
+				pendingBetItems.splice(Number(removeButton.dataset.removeTicketItem), 1);
+				saleFeedbackActive = false;
+				updateSaleButton();
+			});
+			categorySelect.addEventListener("change", () => {
+				selectedCategory = categorySelect.value;
+				const firstChoice = gameCategories[selectedCategory][0];
+				selectGame(firstChoice.id, firstChoice.drawGroup || null);
+			});
+			gameChoiceButtons.addEventListener("click", event => {
+				const button = event.target.closest("[data-game]");
+				if (!button) return;
+				const drawGroup = button.dataset.drawGroup || null;
+				if (button.dataset.game !== selectedGame || drawGroup !== selectedDrawGroup) {
+					selectGame(button.dataset.game, drawGroup);
+				}
+			});
+			drawButtons.addEventListener("click", event => {
+				const button = event.target.closest("[data-draw-id]");
+				if (!button) return;
+				saleFeedbackActive = false;
+				selectedDraw = button.dataset.drawId;
+				updateDrawAvailability();
+			});
+			document.getElementById("tax-code-input")?.addEventListener("input", renderTicketPreview);
+			form.addEventListener("submit", async event => {
+				event.preventDefault();
+				if (!pendingBetItems.length) {
+					const numberVal = document.getElementById("number-expression")?.value.trim();
+					const amountVal = document.getElementById("grouped-total")?.value.trim();
+					if (numberVal && amountVal) {
+						try {
+							addGroupedNumbers(event);
+						} catch (err) {
+							document.getElementById("sale-state").textContent = err.message;
+							return;
+						}
+					}
+				}
+				if (!selectedDraw || !pendingBetItems.length || savingGameSale) return;
+				saleFeedbackActive = false;
+				const shouldPrint = event.submitter?.value !== "skip";
+				const items = pendingBetItems.map(item => ({ ...item }));
+				const totalAmount = items.reduce((total, item) => total + item.amount + (item.redBallAmount || 0), 0);
+				const taxCode = document.getElementById("tax-code-input")?.value.trim() || "";
+				const payload = {
+					reference: items.map(item => item.number).join(","),
+					detail: items.map(item => item.number).join(" / "),
+					amount: totalAmount,
+					items,
+					gameId: selectedGame,
+					drawId: selectedDraw,
+					clientName: taxCode,
+					taxCode,
+					modality: selectedVariant
+				};
+				if (!pendingGameSale) pendingGameSale = { key: crypto.randomUUID(), payload };
+				if (JSON.stringify(pendingGameSale.payload) !== JSON.stringify(payload)) {
+					document.getElementById("sale-state").textContent = "Hay una venta anterior sin confirmar. Repita los mismos datos antes de iniciar otra.";
+					return;
+				}
+				const printWindow = shouldPrint ? window.open("", "_blank", "width=420,height=640") : null;
+				savingGameSale = true;
+				updateSaleButton();
+				let messageAfterSave = "";
+				document.getElementById("sale-state").textContent = "Guardando venta...";
+				try {
+					const result = await salesApi("/api/sales", { method: "POST", body: JSON.stringify({ ...payload, idempotencyKey: pendingGameSale.key }) });
+					pendingGameSale = null;
+					pendingBetItems = [];
+					form.reset();
+					entryForm.reset();
+					renderGameFields();
+					document.getElementById("bet-entry-state").textContent = "Se asignará este monto a cada número ingresado.";
+					lastGameTicket = { sale: result.sale, printJob: result.printJob };
+					if (shouldPrint) {
+						messageAfterSave = `Venta registrada · saldo ${salesCurrency.format(result.balance)}.`;
+						document.getElementById("sale-ticket-message").textContent = `${result.sale.serial} · ${result.sale.description} · ${salesCurrency.format(result.sale.amount)}`;
+						renderSalesTicket(result.sale, result.printJob, printWindow);
+					} else {
+						messageAfterSave = `Compra de prueba registrada sin imprimir · saldo ${salesCurrency.format(result.balance)}.`;
+						document.getElementById("sale-ticket-message").textContent = `Serie ${result.sale.serial}: compra guardada sin imprimir. El ticket queda pendiente para imprimir después.`;
+						document.getElementById("sale-ticket-retry").classList.remove("hidden");
+					}
+					await refreshBankerBalance();
+				} catch (error) {
+					if (printWindow && !printWindow.closed) printWindow.close();
+					if (error.status) pendingGameSale = null;
+					messageAfterSave = error.message;
+				} finally {
+					savingGameSale = false;
+					updateSaleButton();
+					if (messageAfterSave) {
+						saleFeedbackActive = true;
+						document.getElementById("sale-state").textContent = messageAfterSave;
+					}
+				}
+			});
+			document.getElementById("sale-ticket-print").addEventListener("click", async () => {
+				if (!lastGameTicket) return;
+				const printWindow = window.open("", "_blank", "width=420,height=640");
+				try {
+					const { printJob } = await salesApi(`/api/print-jobs/${lastGameTicket.printJob.id}`);
+					renderSalesTicket(lastGameTicket.sale, printJob, printWindow);
+				} catch (error) {
+					if (printWindow && !printWindow.closed) printWindow.close();
+					document.getElementById("sale-state").textContent = error.message;
+				}
+			});
+			renderGameFields();
+			setupTaxCodeMenu();
+			await loadDrawSchedule();
+			await refreshBankerBalance();
+		}
+
+		document.getElementById("search").addEventListener("input", renderRows);
+		document.getElementById("status-filter").addEventListener("change", renderRows);
+		renderSummary();
+		renderRows();
+		initializeSales();
+		updateClock();
+		setInterval(updateClock, 1000);
+	</script>
+	<script>
+		document.getElementById("demo-reset").addEventListener("click", () => {
+			for (const key of ["jornada_cr_banker_balance", "jornada_cr_sales", "jornada_cr_ledger", "jornada_cr_print_jobs", "jornada_cr_draw_results"]) localStorage.removeItem(key);
+			window.location.reload();
+		});
+	</script>
+</body>
+</html>

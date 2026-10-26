@@ -1,0 +1,153 @@
+:root {
+	color-scheme: light;
+	font-synthesis: none;
+	text-size-adjust: 100%;
+}
+
+:root.dark {
+	color-scheme: dark;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	line-height: 1.5;
+}
+
+button,
+input,
+select,
+textarea {
+	font: inherit;
+}
+
+button,
+[role="button"],
+input,
+select {
+	min-height: 2.75rem;
+}
+
+input,
+select,
+textarea {
+	font-size: 1rem;
+}
+
+a,
+button,
+input,
+select,
+textarea,
+[tabindex]:not([tabindex="-1"]) {
+	scroll-margin-block: 1rem;
+}
+
+:focus-visible {
+	outline: 3px solid #0f766e;
+	outline-offset: 2px;
+}
+
+button:not(:disabled),
+[role="button"],
+a {
+	touch-action: manipulation;
+}
+
+button:disabled {
+	cursor: not-allowed;
+}
+
+.skip-link {
+	position: fixed;
+	z-index: 100;
+	top: 0.75rem;
+	left: 0.75rem;
+	transform: translateY(-200%);
+	border-radius: 0.5rem;
+	background: #0f172a;
+	padding: 0.75rem 1rem;
+	color: white;
+	font-weight: 600;
+}
+
+.skip-link:focus {
+	transform: translateY(0);
+}
+
+:root.dark body {
+	background-color: #020617;
+	color: #e2e8f0;
+}
+
+:root.dark .bg-white { background-color: #0f172a !important; }
+:root.dark .bg-gray-50 { background-color: #111827 !important; }
+:root.dark .bg-gray-100 { background-color: #020617 !important; }
+:root.dark .bg-gray-200 { background-color: #1e293b !important; }
+:root.dark .text-slate-900 { color: #f8fafc !important; }
+:root.dark .text-slate-800 { color: #e2e8f0 !important; }
+:root.dark .text-slate-700,
+:root.dark .text-slate-600 { color: #cbd5e1 !important; }
+:root.dark .text-slate-500,
+:root.dark .text-slate-400 { color: #94a3b8 !important; }
+:root.dark .border-gray-100 { border-color: #1e293b !important; }
+:root.dark .border-gray-200 { border-color: #334155 !important; }
+:root.dark .border-gray-300 { border-color: #475569 !important; }
+:root.dark .divide-gray-100 > :not([hidden]) ~ :not([hidden]) { border-color: #1e293b !important; }
+:root.dark .hover\:bg-gray-50:hover { background-color: #1e293b !important; }
+:root.dark .hover\:bg-gray-50\/80:hover { background-color: #1e293b !important; }
+:root.dark .hover\:bg-gray-100:hover { background-color: #334155 !important; }
+:root.dark .disabled\:bg-gray-300:disabled { background-color: #334155 !important; color: #cbd5e1 !important; }
+
+:root.dark input,
+:root.dark select,
+:root.dark textarea {
+	background-color: #0f172a;
+	border-color: #475569;
+	color: #e2e8f0;
+}
+
+:root.dark input::placeholder,
+:root.dark textarea::placeholder { color: #94a3b8; }
+:root.dark .placeholder\:text-slate-400::placeholder { color: #94a3b8 !important; }
+:root.dark .bg-emerald-50 { background-color: #064e3b !important; }
+:root.dark .text-emerald-700,
+:root.dark .text-emerald-800 { color: #a7f3d0 !important; }
+:root.dark .border-emerald-200 { border-color: #047857 !important; }
+:root.dark .bg-amber-50 { background-color: #451a03 !important; }
+:root.dark .text-amber-800,
+:root.dark .text-amber-900,
+:root.dark .text-amber-950 { color: #fde68a !important; }
+:root.dark .border-amber-200,
+:root.dark .border-amber-300 { border-color: #92400e !important; }
+:root.dark .bg-rose-50 { background-color: #4c0519 !important; }
+:root.dark .text-rose-700,
+:root.dark .text-rose-800 { color: #fecdd3 !important; }
+:root.dark .bg-sky-50 { background-color: #082f49 !important; }
+:root.dark .text-sky-700 { color: #bae6fd !important; }
+:root.dark .bg-yellow-50 { background-color: #422006 !important; }
+:root.dark .text-yellow-700 { color: #fde68a !important; }
+:root.dark .bg-teal-50 { background-color: #042f2e !important; }
+:root.dark .text-teal-700,
+:root.dark .text-teal-800 { color: #99f6e4 !important; }
+:root.dark .border-teal-200 { border-color: #115e59 !important; }
+
+.theme-icon-moon { display: none; }
+:root.dark .theme-icon-sun { display: none; }
+:root.dark .theme-icon-moon { display: block; }
+
+@media (prefers-reduced-motion: no-preference) {
+	body, .theme-toggle, .bg-white, .bg-gray-50, .bg-gray-100 { transition: background-color .18s ease, color .18s ease, border-color .18s ease; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html { scroll-behavior: auto; }
+	*, *::before, *::after {
+		animation-duration: .01ms !important;
+		animation-iteration-count: 1 !important;
+		scroll-behavior: auto !important;
+		transition-duration: .01ms !important;
+	}
+}
